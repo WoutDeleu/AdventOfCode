@@ -8,6 +8,9 @@ Welcome to Advent of Code, an annual programming challenge by Eric Wastl. Solve 
 
 Advent of Code offers diverse puzzles for various skill sets. Whether you're an enthusiast or a seasoned developer, these challenges are designed for fun and learning. No computer science background required—just bring your coding knowledge and problem-solving skills.
 
+## Challenges
+- [Day 1](Challenges/Day1.md)
+
 ## Credits
 
 - **Creator**: Eric Wastl
