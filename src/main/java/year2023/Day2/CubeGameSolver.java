@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class CubeGameSolver {
-    public static boolean isPossible(String[] subsets, HashMap<String, Integer> targetCounts) {
+    public static HashMap<String, Integer> countMax(String[] subsets) {
         // Initialize counts for each color
         HashMap<String, Integer> counts = new HashMap<>();
         counts.put("red", 0);
@@ -22,50 +22,35 @@ public class CubeGameSolver {
                 int count = Integer.parseInt(subparts[0]);
 
                 // Update the count for the corresponding color
-                counts.put(color, count);
-
-                // Check if the counts exceed the target counts
-                if (counts.get("red") > targetCounts.get("red") ||
-                        counts.get("green") > targetCounts.get("green") ||
-                        counts.get("blue") > targetCounts.get("blue")) {
-                    return false;
-                }
+                if(counts.get(color) < count) counts.put(color, count);
             }
         }
 
         // If all subsets are processed without exceeding the target counts, the game is possible
-        return true;
+        return counts;
     }
 
     public static void main(String[] args) {
-        // Set the target cube counts
-        HashMap<String, Integer> targetCounts = new HashMap<>();
-        targetCounts.put("red", 12);
-        targetCounts.put("green", 13);
-        targetCounts.put("blue", 14);
-
         List<String> games = readInput("./src/main/java/year2023/Day2/input");
 
-        // Initialize the sum of IDs for possible games
-        int sumOfIds = 0;
-
+        int count = 0;
         // Iterate through each game and check if it's possible
-        int gameId = 1;
         for (String game : games) {
             String[] subsets = game.split("; ");
-
             // Check if the game is possible based on the target cube counts
-            if (isPossible(subsets, targetCounts)) {
-                sumOfIds += gameId;
+            HashMap<String, Integer> counts = countMax(subsets);
+            int factor = 1;
+            for (int v : counts.values()) {
+                factor *= v;
             }
-            gameId ++;
+            count += factor;
         }
 
         // Print the sum of IDs for possible games
-        System.out.println(sumOfIds);
+        System.out.println(count);
     }
 
-    private static List<String> readInput(String input) {
+    static List<String> readInput(String input) {
         try {
             File file = new File(input);
             Scanner scanner = new Scanner(file);
