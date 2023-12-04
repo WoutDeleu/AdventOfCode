@@ -11,7 +11,7 @@ public class ScratchCardSolver {
         System.out.println("score: " + score);
 
         int totalScratchCards = calculateTotalCardScoreExponential(cards);
-        System.out.println("totalAmount: " + score);
+        System.out.println("totalAmount: " + totalScratchCards);
 
     }
 
