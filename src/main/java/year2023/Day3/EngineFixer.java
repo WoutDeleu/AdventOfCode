@@ -8,17 +8,21 @@ public class EngineFixer {
 
     public static void main(String[] args) throws FileNotFoundException {
         char[][] schematic = readSchematic("./src/main/java/year2023/Day3/input");
-        int sum = solveSchematic(schematic);
+        int sum = collectParts(schematic);
+        System.out.println("parts: " + sum);
+        //
+        // sum = collectGears(schematic);
+        // System.out.println("gears: " + sum);
     }
 
-    static int solveSchematic(char[][] schematic) {
+    static int collectParts(char[][] schematic) {
         List<Integer> numbers = new ArrayList<>();
         Set<List<Integer>> visited = new HashSet<>();
         for(int row = 0; row < schematic.length; row++) {
             for(int col = 0; col < schematic[row].length; col++) {
                 char c = schematic[row][col];
                 if (!Character.isDigit(c) && c  != '.') {
-                    gatterSurroundings(null, schematic, visited, numbers, row, col);
+                    collectSurroundings(null, schematic, visited, numbers, row, col);
                 }
             }
         }
@@ -30,13 +34,9 @@ public class EngineFixer {
         return sum;
     }
 
-    private static void gatterSurroundings(StringBuilder currentNumber, char[][] schematic, Set<List<Integer>> visited, List<Integer> numbers, int row, int col) {
+    private static void collectSurroundings(StringBuilder currentNumber, char[][] schematic, Set<List<Integer>> visited, List<Integer> numbers, int row, int col) {
         if(currentNumber != null) {
             // fill out current number
-            boolean found = false;
-            if (currentNumber.toString().equals("66")) {
-                System.out.println();
-            }
             for(int i = -1; i <= 1; i++) {
                 if(isValidDigit(schematic, visited, row, col+i) && i != 0) {
                     if(i < 0) {
@@ -46,11 +46,9 @@ public class EngineFixer {
                         currentNumber.append(schematic[row][col + i]);
                     }
                     visited.add(Arrays.asList(row, col + i));
-                    gatterSurroundings(currentNumber, schematic, visited, numbers, row, col + i);
-                    found = true;
+                    collectSurroundings(currentNumber, schematic, visited, numbers, row, col + i);
                 }
             }
-            if(!found) numbers.add(Integer.parseInt(currentNumber.toString()));
         }
         else {
             for (int i = -1; i <= 1; i++) {
@@ -59,7 +57,8 @@ public class EngineFixer {
                         // Create new number
                         currentNumber = new StringBuilder(Character.toString(schematic[row + i][col + j]));
                         visited.add(List.of(row + i, col + j));
-                        gatterSurroundings(currentNumber, schematic, visited, numbers, row + i, col + j);
+                        collectSurroundings(currentNumber, schematic, visited, numbers, row + i, col + j);
+                        numbers.add(Integer.parseInt(currentNumber.toString()));
                     }
                 }
             }
@@ -94,4 +93,18 @@ public class EngineFixer {
         }
         return schematic;
     }
+
+    // public static int collectGears(char[][] schematic) {
+    //     List<Integer> numbers = new ArrayList<>();
+    //     Set<List<Integer>> visited = new HashSet<>();
+    //     for(int row = 0; row < schematic.length; row++) {
+    //         for(int col = 0; col < schematic[row].length; col++) {
+    //             char c = schematic[row][col];
+    //             if (!Character.isDigit(c) && c  != '.') {
+    //                 collectSurroundings(null, schematic, visited, numbers, row, col);
+    //             }
+    //         }
+    //     }
+    //
+    // }
 }
