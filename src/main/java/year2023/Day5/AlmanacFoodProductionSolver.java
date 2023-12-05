@@ -38,50 +38,49 @@ public class AlmanacFoodProductionSolver {
         long bestLocation = Long.MAX_VALUE;
         long[] seeds = Arrays.stream(sc.nextLine().split(": ")[1].split(" ")).mapToLong(Long::parseLong).toArray();
         for(int i = 0; i < seeds.length; i+=2) {
-            for(long j = seeds[i]; i<seeds[i]+seeds[i+1]; j++) {
+            for(long j = seeds[i]; j<seeds[i]+seeds[i+1]; j++) {
                 sc = new Scanner(new File(path));
                 long seed = 0;
+                seed = j;
                 while(sc.hasNextLine()) {
                     String line = sc.nextLine();
                     if(line.isEmpty()) {
                         continue;
                     }
                     if(line.contains("map")) {
-                        seed = j;
+                        String numbers = sc.nextLine();
+                        TRANSFORM: do {
 
-                        long destinationStart = sc.nextLong();
-                        long sourceStart = sc.nextLong();
-                        long range = sc.nextLong();
+                            long destinationStart = Long.valueOf(numbers.split(" ")[0]);
+                            long sourceStart = Long.valueOf(numbers.split(" ")[1]);
+                            long range = Long.valueOf(numbers.split(" ")[2]);
+                            numbers = sc.nextLine();
 
-                        boolean inRange = false;
-                        if(seed >= sourceStart && seed < sourceStart+range) {
-                            inRange = true;
-                        }
-
-                        if(!inRange) {
-                            continue;
-                        }
-                        for(long q=0; q<range; q++) {
-                            if(seed == sourceStart+q) {
-                                seed = destinationStart+q;
+                            boolean inRange = false;
+                            if (seed >= sourceStart && seed < sourceStart + range) {
+                                inRange = true;
                             }
 
-                        }
-
-
+                            if (!inRange) {
+                                continue;
+                            }
+                            INNER: for (long q = 0; q < range; q++) {
+                                if (seed == sourceStart + q) {
+                                    seed = destinationStart + q;
+                                    if (seed == 46)
+                                        System.out.println();
+                                    break TRANSFORM;
+                                }
+                            }
+                        } while (!numbers.isEmpty() && sc.hasNextLine());
                     }
-
                 }
                 if (seed < bestLocation) {
                     bestLocation = seed;
                 }
             }
         }
-        return Arrays.stream(seeds).min().getAsLong();
-    }
-
-    private static void getEndResult(Scanner sc, long seed) {
-
+        return bestLocation;
     }
 
     private static long[] enlargeSeeds(long[] seeds) {
