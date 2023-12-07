@@ -12,15 +12,21 @@ public class MainTest {
 
     @Test
     public void getHandsRankTest() throws FileNotFoundException {
-        List<Hand> cards= readCards("./src/test/java/year2023/Day7/input");
-        long score = calculateTotalRank(cards);
+        List<Hand> cards= readCards("./src/test/java/year2023/Day7/input", false);
+        long score = calculateTotalRank(cards, false);
         assert score == 6440;
     }
-    // @Test
-    // public void testMainV2() throws FileNotFoundException {
-    //     int[] cards = read("./src/test/java/year2023/Day7/input");
-    //     int score = solve(cards);
-    //     assert score == 35;
-    // }
+    @Test
+    public void getHandsRankWithJokerTest() throws FileNotFoundException {
+        List<Hand> cards = readCards("./src/test/java/year2023/Day7/input", true);
+        long score = calculateTotalRank(cards, true);
+        assert score == 5905;
+    }
+    @Test
+    public void getHandsRankWithJokerTest2() throws FileNotFoundException {
+        List<Hand> cards = readCards("./src/test/java/year2023/Day7/testInput", true);
+        long score = calculateTotalRank(cards, true);
+        assert score == 1369;
+    }
 }
 

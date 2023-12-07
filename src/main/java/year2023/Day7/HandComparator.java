@@ -3,6 +3,11 @@ package year2023.Day7;
 import java.util.Comparator;
 
 public class HandComparator implements Comparator<Hand> {
+    private boolean secondSolution = false;
+
+    public HandComparator(boolean secondSolution) {
+        this.secondSolution = secondSolution;
+    }
 
     // alphabet : a b c d e f g h i j k l m n o p q r s t u v w x y z
     @Override
@@ -46,11 +51,17 @@ public class HandComparator implements Comparator<Hand> {
                         }
                         break;
                     case 'J':
-                        if(h2.getCards()[i] != 'A' && h2.getCards()[i] != 'K' && h2.getCards()[i] != 'Q' && h2.getCards()[i] != 'J') {
-                            return 1;
+                        if(!secondSolution) {
+                            if(h2.getCards()[i] != 'A' && h2.getCards()[i] != 'K' && h2.getCards()[i] != 'Q' && h2.getCards()[i] != 'J') {
+                                return 1;
+                            }
+                            else if(h2.getCards()[i] == 'A' || h2.getCards()[i] == 'K' || h2.getCards()[i] == 'Q') {
+                                return -1;
+                            }
                         }
-                        else if(h2.getCards()[i] == 'A' || h2.getCards()[i] == 'K' || h2.getCards()[i] == 'Q') {
-                            return -1;
+                        else {
+                            if(h2.getCards()[i] != 'J') return -1;
+                            break;
                         }
                         break;
                     case 'T':
