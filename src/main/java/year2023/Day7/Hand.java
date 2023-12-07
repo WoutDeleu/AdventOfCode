@@ -31,25 +31,18 @@ public class Hand {
         if (secondSolution) {
             // Fill in jokers
             int amountOfJokers = cardCount.getOrDefault('J', 0);
-            if(amountOfJokers > 0) {
-                int current = switch (currentBest) {
-                    case 7,6,5 -> 7;
-                    case 4 -> 6;
-                    case 3 -> {
-                        if(amountOfJokers == 1) {
-                            yield 5;
-                        }
-                        else {
-                            yield 6;
-                        }
-                    }
-                    case 2 -> 4;
-                    case 1 -> 2;
-                    default -> throw new Exception();
-                };
-                if(current > currentBest) {
-                    currentBest = current;
+            cardCount.remove('J');
+            boolean contained;
+            for (char a : new char[]{'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'}) {
+                if (cardCount.containsKey(a)) contained = true;
+                else contained = false;
+                cardCount.put(a, cardCount.getOrDefault(a, 0) + amountOfJokers);
+                int score = convertCardCountToScore(cardCount);
+                if (score > currentBest) {
+                    currentBest = score;
                 }
+                cardCount.put(a, cardCount.get(a) - amountOfJokers);
+                if (!contained) cardCount.remove(a);
             }
         }
         return currentBest;
