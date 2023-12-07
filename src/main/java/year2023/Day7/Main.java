@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         solveFirst();
         solveSecond();
     }
 
-    private static void solveSecond() throws FileNotFoundException {
+    private static void solveSecond() throws Exception {
         List<Hand> hands = readCards("./src/main/java/year2023/Day7/input", true);
         long score = calculateTotalRank(hands, true);
         System.out.println("score: " + score);
     }
 
-    private static void solveFirst() throws FileNotFoundException {
+    private static void solveFirst() throws Exception {
         List<Hand> hands = readCards("./src/main/java/year2023/Day7/input", false);
         long score = calculateTotalRank(hands, false);
         System.out.println("score: " + score);
@@ -33,9 +33,9 @@ public class Main {
         return totalScore;
     }
 
-    static List<Hand> readCards(String path, boolean secondSolution) throws FileNotFoundException {
+    static List<Hand> readCards(String path, boolean secondSolution) throws Exception {
         Scanner sc = new Scanner(new File(path));
-        List<Hand> cards = new ArrayList<Hand>();
+        List<Hand> cards = new ArrayList<>();
         while (sc.hasNextLine()) {
             String[] line = sc.nextLine().split(" ");
             cards.add(new Hand(line[0].toCharArray(), Integer.parseInt(line[1]), secondSolution));

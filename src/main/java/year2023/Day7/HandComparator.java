@@ -27,6 +27,12 @@ public class HandComparator implements Comparator<Hand> {
                     return -1;
                 }
             }
+            else if((h1.getCards()[i]) == 'J' && h2.getCards()[i] != 'J') {
+                return -1;
+            }
+            else if((h2.getCards()[i]) == 'J' && h1.getCards()[i] != 'J') {
+                return 1;
+            }
             else if(!Character.isDigit(h1.getCards()[i]) && !Character.isDigit(h2.getCards()[i])) {
                 switch (h1.getCards()[i]) {
                     case 'A':
@@ -65,13 +71,24 @@ public class HandComparator implements Comparator<Hand> {
                         }
                         break;
                     case 'T':
-                        if(h2.getCards()[i] != 'A' && h2.getCards()[i] != 'K' && h2.getCards()[i] != 'Q' && h2.getCards()[i] != 'J' && h2.getCards()[i] != 'T') {
-                            return 1;
+                        if(!secondSolution) {
+                            if(h2.getCards()[i] != 'A' && h2.getCards()[i] != 'K' && h2.getCards()[i] != 'Q' && h2.getCards()[i] != 'J' && h2.getCards()[i] != 'T') {
+                                return 1;
+                            }
+                            else if(h2.getCards()[i] == 'A' || h2.getCards()[i] == 'K' || h2.getCards()[i] == 'Q' || h2.getCards()[i] == 'J') {
+                                return -1;
+                            }
+                            break;
                         }
-                        else if(h2.getCards()[i] == 'A' || h2.getCards()[i] == 'K' || h2.getCards()[i] == 'Q' || h2.getCards()[i] == 'J') {
-                            return -1;
+                        else {
+                            if(h2.getCards()[i] != 'A' && h2.getCards()[i] != 'K' && h2.getCards()[i] != 'Q' && h2.getCards()[i] != 'T') {
+                                return 1;
+                            }
+                            else if(h2.getCards()[i] == 'A' || h2.getCards()[i] == 'K' || h2.getCards()[i] == 'Q') {
+                                return -1;
+                            }
+                            break;
                         }
-                        break;
                     default:
                         break;
                 }
