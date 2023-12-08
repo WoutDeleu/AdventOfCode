@@ -2,13 +2,14 @@ package year2023.Day8;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.util.*;
 
 public class MapSolver {
     public static void main(String[] args) throws FileNotFoundException {
         List<RightLeft> directions = readSteps("./src/main/java/year2023/Day8/input");
         Map<String, String[]> nodes = readNodes("./src/main/java/year2023/Day8/input");
-        System.out.println("#steps: " +  calculateAmountOfSteps(directions, nodes));
+        System.out.println("#steps: " +  calculateAmountOfSteps("AAA", "ZZZ", directions, nodes));
 
        directions = readSteps("./src/main/java/year2023/Day8/input_pt2");
        nodes = readNodes("./src/main/java/year2023/Day8/input_pt2");
@@ -16,36 +17,30 @@ public class MapSolver {
     }
 
     static long calculateAmountOfStepsMultiPath(List<RightLeft> directions, Map<String, String[]> nodes) {
-        boolean endIsReached = false;
-        long count = 0;
-        int index = 0;
         List<String> currentNodes = findNodesContaining(nodes, "A");
-        List<List<String>> sequences = new ArrayList<>();
-        for(int ghost_index = 0; ghost_index < currentNodes.size(); ghost_index++) {
-            sequences.add(new ArrayList<>());
-            sequences.get(ghost_index).add(currentNodes.get(ghost_index));
+        List<Long> steps = new ArrayList<>();
+        for(int i = 0; i < currentNodes.size(); i++) {
+            steps.add(calculateAmountOfSteps(currentNodes.get(i), "Z", directions, nodes));
         }
-        while(!endIsReached) {
-            endIsReached = true;
-            List<String> nextNodes = new ArrayList<>();
-            int ghost_index = 0;
-            for(String node : currentNodes) {
-                String nextNode = nodes.get(node)[directions.get(index).index];
-                nextNodes.add(nextNode);
-                sequences.get(ghost_index).add(nextNode);
-                ghost_index++;
-            }
-            List<Integer> indicesToRemove = new ArrayList<>();
-            for(int i = 0; i < sequences.size(); i++) {
-                if(detectCycle(sequences.get(i))) indicesToRemove.add(i);
-            }
-            currentNodes = nextNodes;
-            if(index == directions.size() - 1) index = 0;
-            else index++;
-            count ++;
-        }
-        return count;
+        return getCommunalDivider(steps);
+    }
 
+    public static long lcm(long a, long b) {
+        if (b == 0) {
+            return a;
+        }
+        return lcm(b, a % b);
+    }
+
+    public static long getCommunalDivider(List<Long> steps) {
+        long lcm = steps.get(0);
+        for (int i = 1; i < steps.size(); i++) {
+            long num1 = lcm;
+            long num2 = steps.get(i);
+            long gcd_val = lcm(num1, num2);
+            lcm = (lcm * steps.get(i)) / gcd_val;
+        }
+        return lcm;
     }
 
     private static List<String> findNodesContaining(Map<String, String[]> nodes, String a) {
@@ -56,16 +51,16 @@ public class MapSolver {
         return nodesContaining;
     }
 
-    static long calculateAmountOfSteps(List<RightLeft> directions, Map<String, String[]> nodes) {
+    static long calculateAmountOfSteps(String startNode, String endNode, List<RightLeft> directions, Map<String, String[]> nodes) {
         boolean endIsReached = false;
         long count = 0;
         int index = 0;
-        String currentNode = "AAA";
+        String currentNode = startNode;
         while(!endIsReached) {
             String[] children = nodes.get(currentNode);
             count ++;
             String nextNode = children[directions.get(index).index];
-            if(nextNode.equals("ZZZ")) endIsReached = true;
+            if(nextNode.endsWith(endNode)) endIsReached = true;
             currentNode = nextNode;
             if(index == directions.size() - 1) index = 0;
             else index++;

@@ -15,14 +15,14 @@ public class MapSolverTest {
     public void testMain() throws FileNotFoundException {
         List<RightLeft> directions = readSteps("./src/test/java/year2023/Day8/input");
         Map<String, String[]> nodes = readNodes("./src/test/java/year2023/Day8/input");
-        long amountOfSteps = calculateAmountOfSteps(directions, nodes);
+        long amountOfSteps = calculateAmountOfSteps("AAA", "ZZZ", directions, nodes);
         assert amountOfSteps == 2;
     }
     @Test
     public void testMainV2() throws FileNotFoundException {
         List<RightLeft> directions = readSteps("./src/test/java/year2023/Day8/input2");
         Map<String, String[]> nodes = readNodes("./src/test/java/year2023/Day8/input2");
-        long amountOfSteps = calculateAmountOfSteps(directions, nodes);
+        long amountOfSteps = calculateAmountOfSteps("AAA", "ZZZ", directions, nodes);
         assert amountOfSteps == 6;
     }
     @Test
