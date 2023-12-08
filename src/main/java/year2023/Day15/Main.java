@@ -2,7 +2,7 @@
 
     // import java.io.File;
     // import java.io.FileNotFoundException;
-    // public class Main {
+    // public class MapSolver {
     //     public static void main(String[] args) throws FileNotFoundException {
     //         int[] cards = read("./src/main/java/year2023/Day15/input");
     //         int score = solve(cards);
