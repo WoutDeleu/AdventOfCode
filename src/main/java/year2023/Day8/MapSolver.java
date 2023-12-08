@@ -20,14 +20,24 @@ public class MapSolver {
         long count = 0;
         int index = 0;
         List<String> currentNodes = findNodesContaining(nodes, "A");
+        List<List<String>> sequences = new ArrayList<>();
+        for(int ghost_index = 0; ghost_index < currentNodes.size(); ghost_index++) {
+            sequences.add(new ArrayList<>());
+            sequences.get(ghost_index).add(currentNodes.get(ghost_index));
+        }
         while(!endIsReached) {
             endIsReached = true;
             List<String> nextNodes = new ArrayList<>();
+            int ghost_index = 0;
             for(String node : currentNodes) {
-                String[] children = nodes.get(node);
-                String nextNode = children[directions.get(index).index];
-                if(!nextNode.endsWith("Z")) endIsReached = false;
+                String nextNode = nodes.get(node)[directions.get(index).index];
                 nextNodes.add(nextNode);
+                sequences.get(ghost_index).add(nextNode);
+                ghost_index++;
+            }
+            List<Integer> indicesToRemove = new ArrayList<>();
+            for(int i = 0; i < sequences.size(); i++) {
+                if(detectCycle(sequences.get(i))) indicesToRemove.add(i);
             }
             currentNodes = nextNodes;
             if(index == directions.size() - 1) index = 0;
