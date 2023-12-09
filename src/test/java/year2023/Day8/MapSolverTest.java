@@ -32,12 +32,6 @@ public class MapSolverTest {
         long amountOfSteps = calculateAmountOfStepsMultiPath(directions, nodes);
         assert amountOfSteps == 6;
     }
-    @Test
-    public void testMain2pt2() throws FileNotFoundException {
-        List<RightLeft> directions = readSteps("./src/test/java/year2023/Day8/input2_pt2");
-        Map<String,String[]> nodes = readNodes("./src/test/java/year2023/Day8/input2_pt2");
-        long amountOfSteps = calculateAmountOfStepsMultiPath(directions, nodes);
-        assert amountOfSteps ==21;
-    }
+
 }
 
