@@ -2,7 +2,6 @@ package year2023.Day9;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -20,7 +19,13 @@ public class sensorReadingTest {
         assert sum == 114;
     }
     @Test
-    public void testMainV2() throws FileNotFoundException {
+    public void testExtrapolationBackwards() throws FileNotFoundException {
+        List<SensorReading> readings = readHistoryInput("./src/test/java/year2023/Day9/input");
+        Long sum = readings
+                .stream()
+                .mapToLong(x-> { x.extrapolate(); return x.predictBackwards();} )
+                .reduce(Long::sum).orElseThrow();
+        assert sum == 2;
 
     }
 }

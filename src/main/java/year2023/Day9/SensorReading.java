@@ -1,7 +1,6 @@
 package year2023.Day9;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SensorReading {
@@ -40,5 +39,17 @@ public class SensorReading {
             summingFactor = previousValue + summingFactor;
         }
         return extrapolations.get(0).get(extrapolations.get(0).size()-1);
+    }
+
+    public long predictBackwards() {
+        long summingFactor = 0;
+        for(int i = this.extrapolations.size()-1; i >= 0; i--) {
+            List<Long> extrapolation = extrapolations.get(i);
+            long previousValue = extrapolation.get(0);
+            extrapolation.add(0,  previousValue- summingFactor);
+            summingFactor = previousValue - summingFactor;
+        }
+        return extrapolations.get(0).get(0);
+
     }
 }
