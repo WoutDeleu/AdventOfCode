@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 
 import static year2024.Day1.Main.*;
 
+// todo - refactor
 public class MainTest {
   @Test
   public void part2() throws FileNotFoundException {

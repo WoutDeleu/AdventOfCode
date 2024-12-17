@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+// todo - refactor
 public class Main {
   public static void main(String[] args) throws FileNotFoundException {
     var cards = read("./src/main/java/year2024/Day1/input");
