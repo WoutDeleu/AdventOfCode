@@ -12,9 +12,19 @@
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="Maven-ML-private" />
+      <option name="name" value="Maven-ML-private" />
+      <option name="url" value="https://volvocargroup.pkgs.visualstudio.com/dcb68f05-2f85-40fd-9c62-11e82e85877d/_packaging/Maven-ML-private/maven/v1" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="https://volvocargroup.pkgs.visualstudio.com/dcb68f05-2f85-40fd-9c62-11e82e85877d/_packaging/Maven-ML-private/maven/v1" />
     </remote-repository>
   </component>
 </project>
