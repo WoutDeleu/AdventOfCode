@@ -18,6 +18,6 @@ public class MainTest {
   @Test
   public void part2() throws FileNotFoundException {
     var cards = read("./src/test/java/year2024/Day2/input");
-    assert solve_pt2(cards) == 2;
+    assert solve_pt2(cards) == 4;
   }
 }

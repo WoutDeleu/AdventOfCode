@@ -1,11 +1,31 @@
-    // package year2023.Day5;
+package year2024.Day5;
 
-    // import java.io.File;
-    // import java.io.FileNotFoundException;
-    // public class Main {
-    //     public static void main(String[] args) throws FileNotFoundException {
-    //         int[] cards = read("./src/main/java/year2023/Day5/input");
-    //         int score = solve_pt1(cards);
-    //         System.out.println("score: " + score);
-    //     }
-    // }
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) throws FileNotFoundException {
+    var input = new Main().read("./src/main/java/year2024/Day5/input");
+    int score = new Main().solve_pt1(input);
+    System.out.println("pt1: " + score);
+
+    int score2 = new Main().solve_pt2(input);
+    System.out.println("pt2: " + score2);
+  }
+
+
+  public int solve_pt1(int[] input) {
+    return 0;
+  }
+
+  public int solve_pt2(int[] input) {
+    return 0;
+  }
+
+  public int[] read(String s) throws FileNotFoundException {
+    var sc = new Scanner(new File(s));
+    return null;
+  }
+}

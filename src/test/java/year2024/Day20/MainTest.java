@@ -1,20 +1,24 @@
-    // package year2023.Day20;
+  package year2024.Day20;
 
-    // import java.io.File;
-    // import java.io.FileNotFoundException;
-    // public class AlmanacFoodProductionSolverTest {
-    //
-    //     @Test
-    //     public void testMain() throws FileNotFoundException {
-    //         int[] cards = read("./src/test/java/year2023/Day20/input");
-    //         int score = solve_pt1(cards);
-    //         assert score == 35;
-    //     }
-    //     @Test
-    //     public void testMainV2() throws FileNotFoundException {
-    //         int[] cards = read("./src/test/java/year2023/Day20/input");
-    //         int score = solve_pt1(cards);
-    //         assert score == 35;
-    //     }
-    // }
+  import org.junit.Test;
+
+  import java.io.FileNotFoundException;
+
+
+  public class MainTest {
+    @Test
+    public void part1() throws FileNotFoundException {
+      var main = new Main();
+      var input = main.read("./src/test/java/year2024/Day20/input");
+      int solution = main.solve_pt1(input);
+      assert solution == 1;
+    }
+
+    @Test
+    public void part2() throws FileNotFoundException {
+      var main = new Main();
+      var input = main.read("./src/test/java/year2024/Day20/input");
+      assert main.solve_pt2(input) == 1;
+    }
+  }
 

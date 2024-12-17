@@ -35,12 +35,7 @@ Advent of Code offers diverse puzzles for various skill sets. Whether you're an 
 - [Day 23](Challenges/2023/Day23.md)
 - [Day 24](Challenges/2023/Day24.md)
 - [Day 25](Challenges/2023/Day25.md)
-- [Day 26](Challenges/2023/Day26.md)
-- [Day 27](Challenges/2023/Day27.md)
-- [Day 28](Challenges/2023/Day28.md)
-- [Day 29](Challenges/2023/Day29.md)
-- [Day 30](Challenges/2023/Day30.md)
-- [Day 31](Challenges/2023/Day31.md)
+
 
 ### 2024
 - [Day 1](Challenges/2024/Day1.md)
@@ -68,12 +63,7 @@ Advent of Code offers diverse puzzles for various skill sets. Whether you're an 
 - [Day 23](Challenges/2024/Day23.md)
 - [Day 24](Challenges/2024/Day24.md)
 - [Day 25](Challenges/2024/Day25.md)
-- [Day 26](Challenges/2024/Day26.md)
-- [Day 27](Challenges/2024/Day27.md)
-- [Day 28](Challenges/2024/Day28.md)
-- [Day 29](Challenges/2024/Day29.md)
-- [Day 30](Challenges/Day30.md)
-- [Day 31](Challenges/Day31.md)
+
 ## Credits
 
 - **Creator**: Eric Wastl
