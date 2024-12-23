@@ -11,14 +11,16 @@
       var main = new Main();
       var input = main.read("./src/test/java/year2024/Day4/input");
       int solution = main.solve_pt1(input);
-      assert solution == 1;
+      System.out.println(solution);
+      assert solution == 18;
     }
 
     @Test
     public void part2() throws FileNotFoundException {
       var main = new Main();
-      var input = main.read("./src/test/java/year2024/Day4/input");
-      assert main.solve_pt2(input) == 1;
+      var input = main.read("./src/test/java/year2024/Day4/input2");
+      System.out.println(main.solve_pt2(input));
+      assert main.solve_pt2(input) == 9;
     }
   }
 
