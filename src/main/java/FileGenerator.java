@@ -86,8 +86,9 @@ public class FileGenerator {
               public void part2() throws FileNotFoundException {
                 var main = new Main();
                 var input = main.read("./src/test/java/year2024/Day%s/input");
+                int solution = main.solve_pt2(input);
                 System.out.println("Solution: " + solution);
-                assert main.solve_pt2(input) == 1;
+                assert solution == 1;
               }
             }
           
