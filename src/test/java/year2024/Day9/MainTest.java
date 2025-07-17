@@ -1,18 +1,18 @@
   package year2024.Day9;
 
-  import org.junit.Test;
+import java.io.FileNotFoundException;
+import org.junit.Test;
 
-  import java.io.FileNotFoundException;
+public class MainTest {
 
 
-  public class MainTest {
     @Test
     public void part1() throws FileNotFoundException {
       var main = new Main();
       var input = main.read("./src/test/java/year2024/Day9/input");
-      int solution = main.solve_pt1(input);
+      var solution = main.solve_pt1(input);
       System.out.println("Solution: " + solution);
-      assert solution == 1;
+      assert solution == 1928;
     }
 
     @Test
@@ -23,5 +23,6 @@
       System.out.println("Solution: " + solution);
       assert solution == 1;
     }
+
   }
 
