@@ -33,8 +33,7 @@ public class Main {
 
   private List<Long> changeStones(List<Long> stones) {
     List<Long> newStones = new ArrayList<>();
-    for (int i = 0; i < stones.size(); i++) {
-      Long stone = stones.get(i);
+    for (Long stone : stones) {
       if (stone.equals(0L)) {
         newStones.add(1L);
       } else if (hasEvenNumberOfDigits(stone)) {
