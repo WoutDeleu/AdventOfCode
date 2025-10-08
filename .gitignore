@@ -1,5 +1,12 @@
+# Maven build
 /target/
+
+# IntelliJ IDEA
+/.idea/workspace.xml
 /.idea/git_toolbox_prj.xml
+/.idea/shelf/
+/.idea/copilot*.xml
+*.iml
 
 # Advent of Code inputs (unique per user, don't commit)
 src/main/resources/inputs/*/day*.txt
