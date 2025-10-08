@@ -6,11 +6,19 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility to fetch Advent of Code inputs from the official website
  * Usage: java FetchInput.java <year> <day>
  * Example: java FetchInput.java 2016 1
+ *
+ * Automatically fetches:
+ * - Your personal puzzle input
+ * - Example inputs from the puzzle description
  *
  * Requires AOC_SESSION environment variable to be set with your session cookie
  */
@@ -43,20 +51,26 @@ public class FetchInput {
         new File(mainDir).mkdirs();
         new File(testDir).mkdirs();
 
-        // Fetch input
-        System.out.printf("Fetching input for %d Day %d...%n", year, day);
+        // Fetch puzzle input
+        System.out.printf("Fetching puzzle input for %d Day %d...%n", year, day);
         String input = fetchInput(year, day, sessionCookie);
 
         // Save main input
         Path mainInputFile = Path.of(mainDir + "input");
         Files.writeString(mainInputFile, input);
-        System.out.println("✓ Input saved to: " + mainInputFile);
+        System.out.println("✓ Puzzle input saved to: " + mainInputFile);
 
-        // Create empty test input
+        // Fetch example input from puzzle description
+        System.out.printf("Fetching example input from puzzle description...%n");
+        String exampleInput = fetchExampleInput(year, day, sessionCookie);
+
         Path testInputFile = Path.of(testDir + "input");
-        if (!Files.exists(testInputFile)) {
+        if (exampleInput != null && !exampleInput.isEmpty()) {
+            Files.writeString(testInputFile, exampleInput);
+            System.out.println("✓ Example input saved to: " + testInputFile);
+        } else {
             Files.writeString(testInputFile, "");
-            System.out.println("✓ Test input created: " + testInputFile);
+            System.out.println("⚠ No example input found, created empty file: " + testInputFile);
         }
 
         // Create Main.java from template
@@ -67,9 +81,16 @@ public class FetchInput {
 
         System.out.println("\n✓ Setup complete!");
         System.out.println("\nNext steps:");
-        System.out.println("1. Add test input to: " + testInputFile);
-        System.out.println("2. Edit solution in: " + mainDir + "Main.java");
-        System.out.println("3. Run with: cd src/main/java && java year" + year + ".Day" + day + ".Main");
+        if (exampleInput == null || exampleInput.isEmpty()) {
+            System.out.println("1. Add example input to: " + testInputFile);
+            System.out.println("2. Edit solution in: " + mainDir + "Main.java");
+            System.out.println("3. Run with: cd src/main/java && java year" + year + ".Day" + day + ".Main");
+        } else {
+            System.out.println("1. Verify example input in: " + testInputFile);
+            System.out.println("2. Edit solution in: " + mainDir + "Main.java");
+            System.out.println("3. Run tests with: mvn test -Dtest=Day" + day + "Test");
+            System.out.println("4. Run with: cd src/main/java && java year" + year + ".Day" + day + ".Main");
+        }
     }
 
     private static String fetchInput(int year, int day, String sessionCookie)
@@ -90,6 +111,64 @@ public class FetchInput {
         }
 
         return response.body();
+    }
+
+    private static String fetchExampleInput(int year, int day, String sessionCookie)
+            throws IOException, InterruptedException {
+        String url = String.format("%s/%d/day/%d", BASE_URL, year, day);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Cookie", "session=" + sessionCookie)
+                .header("User-Agent", "github.com/woutdeleu/AdventOfCode")
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() != 200) {
+            System.err.println("Warning: Failed to fetch puzzle description: HTTP " + response.statusCode());
+            return null;
+        }
+
+        return extractExampleInput(response.body());
+    }
+
+    private static String extractExampleInput(String html) {
+        // AOC puzzle examples are typically in <pre><code> tags
+        // We'll extract the first substantial code block that looks like input data
+        Pattern codePattern = Pattern.compile("<pre><code>(.*?)</code></pre>", Pattern.DOTALL);
+        Matcher matcher = codePattern.matcher(html);
+
+        List<String> codeBlocks = new ArrayList<>();
+        while (matcher.find()) {
+            String code = matcher.group(1)
+                .replaceAll("&lt;", "<")
+                .replaceAll("&gt;", ">")
+                .replaceAll("&amp;", "&")
+                .replaceAll("&quot;", "\"")
+                .replaceAll("<em>", "")
+                .replaceAll("</em>", "")
+                .trim();
+
+            // Filter out empty blocks and very short snippets
+            if (!code.isEmpty() && code.length() > 5) {
+                codeBlocks.add(code);
+            }
+        }
+
+        // Return the first substantial code block (usually the example input)
+        // Most AOC puzzles have the example input in the first or second code block
+        for (String block : codeBlocks) {
+            // Skip blocks that look like output/results (typically numbers or short text)
+            // Example inputs usually have multiple lines or are longer
+            if (block.contains("\n") || block.length() > 20) {
+                return block;
+            }
+        }
+
+        // If no multi-line block found, return the first block if it exists
+        return codeBlocks.isEmpty() ? null : codeBlocks.get(0);
     }
 
     private static void createMainFile(int year, int day, String dir) throws IOException {

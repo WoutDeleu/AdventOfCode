@@ -33,9 +33,15 @@ My solutions for [Advent of Code](https://adventofcode.com/) puzzles, written in
 # Set your session cookie (one-time setup)
 export AOC_SESSION='your_session_cookie_here'
 
-# Fetch input and create files
+# Fetch everything automatically!
 java FetchInput.java 2024 13
 ```
+
+This **automatically**:
+- ✅ Downloads your **personal puzzle input**
+- ✅ Extracts **example input** from puzzle description
+- ✅ Creates directory structure
+- ✅ Generates `Main.java` and `MainTest.java` from templates
 
 **Option 2: Manual setup**
 ```bash
@@ -157,19 +163,19 @@ public class Main {
 
 Here's the recommended workflow when a new Advent of Code puzzle is released:
 
-1. **Fetch the puzzle input** (6:00 AM EST when puzzle unlocks)
+1. **Fetch everything automatically** (6:00 AM EST when puzzle unlocks)
    ```bash
    java FetchInput.java 2024 13
    ```
    This automatically:
    - Creates `src/main/java/year2024/Day13/` and `src/test/java/year2024/Day13/`
-   - Downloads your puzzle input from adventofcode.com
+   - Downloads your **personal puzzle input** → `src/main/java/year2024/Day13/input`
+   - Extracts **example input** from puzzle → `src/test/java/year2024/Day13/input`
    - Generates `Main.java` and `MainTest.java` from templates
-   - Creates empty test input file
 
-2. **Add test input**
-   - Copy example input from puzzle description
-   - Paste into `src/test/java/year2024/Day13/input`
+2. **Verify example input**
+   - Check `src/test/java/year2024/Day13/input` has the correct example
+   - Update if needed (some puzzles have multiple examples)
 
 3. **Implement solution**
    - Edit `src/main/java/year2024/Day13/Main.java`
@@ -205,6 +211,13 @@ Here's the recommended workflow when a new Advent of Code puzzle is released:
 2. Add `System.out.println()` to debug intermediate steps
 3. Test edge cases separately
 4. Only run with real input once tests pass
+
+**How Example Extraction Works**
+- FetchInput.java fetches the puzzle description HTML
+- Parses `<pre><code>` blocks to find example inputs
+- Automatically handles HTML entities and formatting
+- Selects the first substantial code block (usually the example)
+- ⚠️ Note: Some puzzles have multiple examples - verify and update if needed!
 
 ---
 
