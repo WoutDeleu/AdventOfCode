@@ -121,40 +121,75 @@ AdventOfCode/
 
 ## 💻 Solution Template
 
-Each day's solution follows this pattern:
+The generated template provides a clean, flexible structure:
 
 ```java
 package year2024.Day1;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
-        var input = new Main().read("./src/main/java/year2024/Day1/input");
-        int pt1 = new Main().solve_pt1(input);
-        System.out.println("pt1: " + pt1);
+    public static void main(String[] args) throws IOException {
+        var input = readInput("./src/main/java/year2024/Day1/input");
 
-        int pt2 = new Main().solve_pt2(input);
-        System.out.println("pt2: " + pt2);
+        var part1 = solvePart1(input);
+        System.out.println("Part 1: " + part1);
+
+        var part2 = solvePart2(input);
+        System.out.println("Part 2: " + part2);
     }
 
-    public int solve_pt1(String[] input) {
-        // Your solution here
-        return 0;
-    }
-
-    public int solve_pt2(String[] input) {
-        // Your solution here
-        return 0;
-    }
-
-    public String[] read(String path) throws FileNotFoundException {
-        var sc = new Scanner(new File(path));
-        // Read and parse input
+    static Object solvePart1(List<String> lines) {
+        // TODO: Implement solution for part 1
+        // Return type can be int, long, String, etc.
         return null;
     }
+
+    static Object solvePart2(List<String> lines) {
+        // TODO: Implement solution for part 2
+        return null;
+    }
+
+    static List<String> readInput(String path) throws IOException {
+        return Files.readAllLines(Path.of(path));
+    }
+}
+```
+
+**Key Features:**
+- ✅ **Flexible return types**: Use `Object` return type - works with int, long, String, etc.
+- ✅ **Modern Java**: Uses `Files.readAllLines()` for clean file reading
+- ✅ **List-based input**: Easy to process with streams and functional programming
+- ✅ **Static methods**: Testable without creating instances
+
+**Common Usage Patterns:**
+
+```java
+// Parse to integers
+static Object solvePart1(List<String> lines) {
+    List<Integer> numbers = lines.stream()
+        .map(Integer::parseInt)
+        .toList();
+    return numbers.stream().mapToInt(Integer::intValue).sum();
+}
+
+// Parse grid/2D array
+static Object solvePart1(List<String> lines) {
+    char[][] grid = lines.stream()
+        .map(String::toCharArray)
+        .toArray(char[][]::new);
+    return processGrid(grid);
+}
+
+// Split and parse
+static Object solvePart1(List<String> lines) {
+    String[] parts = lines.get(0).split(",");
+    return Arrays.stream(parts)
+        .mapToInt(Integer::parseInt)
+        .sum();
 }
 ```
 

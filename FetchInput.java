@@ -175,32 +175,34 @@ public class FetchInput {
         String content = String.format("""
             package year%d.Day%d;
 
-            import java.io.File;
-            import java.io.FileNotFoundException;
-            import java.util.Scanner;
+            import java.io.IOException;
+            import java.nio.file.Files;
+            import java.nio.file.Path;
+            import java.util.List;
 
             public class Main {
-                public static void main(String[] args) throws FileNotFoundException {
-                    var input = new Main().read("./src/main/java/year%d/Day%d/input");
-                    int score = new Main().solve_pt1(input);
-                    System.out.println("pt1: " + score);
+                public static void main(String[] args) throws IOException {
+                    var input = readInput("./src/main/java/year%d/Day%d/input");
 
-                    int score2 = new Main().solve_pt2(input);
-                    System.out.println("pt2: " + score2);
+                    var part1 = solvePart1(input);
+                    System.out.println("Part 1: " + part1);
+
+                    var part2 = solvePart2(input);
+                    System.out.println("Part 2: " + part2);
                 }
 
-                public int solve_pt1(String[] input) {
-                    return 0;
-                }
-
-                public int solve_pt2(String[] input) {
-                    return 0;
-                }
-
-                public String[] read(String path) throws FileNotFoundException {
-                    var sc = new Scanner(new File(path));
-                    // TODO: Parse input
+                static Object solvePart1(List<String> lines) {
+                    // TODO: Implement solution for part 1
                     return null;
+                }
+
+                static Object solvePart2(List<String> lines) {
+                    // TODO: Implement solution for part 2
+                    return null;
+                }
+
+                static List<String> readInput(String path) throws IOException {
+                    return Files.readAllLines(Path.of(path));
                 }
             }
             """, year, day, year, day);
@@ -215,26 +217,32 @@ public class FetchInput {
             package year%d.Day%d;
 
             import org.junit.Test;
+            import java.io.IOException;
+            import java.util.List;
 
-            import java.io.FileNotFoundException;
+            import static org.junit.Assert.*;
 
             public class MainTest {
                 @Test
-                public void part1() throws FileNotFoundException {
-                    var main = new Main();
-                    var input = main.read("./src/test/java/year%d/Day%d/input");
-                    var solution = main.solve_pt1(input);
-                    System.out.println("Solution: " + solution);
-                    assert solution == 1;
+                public void testPart1() throws IOException {
+                    var input = Main.readInput("./src/test/java/year%d/Day%d/input");
+                    var result = Main.solvePart1(input);
+
+                    System.out.println("Part 1 result: " + result);
+                    // TODO: Update with expected result from puzzle
+                    // assertEquals(expectedValue, result);
+                    assertNotNull(result);
                 }
 
                 @Test
-                public void part2() throws FileNotFoundException {
-                    var main = new Main();
-                    var input = main.read("./src/test/java/year%d/Day%d/input");
-                    var solution = main.solve_pt2(input);
-                    System.out.println("Solution: " + solution);
-                    assert solution == 1;
+                public void testPart2() throws IOException {
+                    var input = Main.readInput("./src/test/java/year%d/Day%d/input");
+                    var result = Main.solvePart2(input);
+
+                    System.out.println("Part 2 result: " + result);
+                    // TODO: Update with expected result from puzzle
+                    // assertEquals(expectedValue, result);
+                    assertNotNull(result);
                 }
             }
             """, year, day, year, day, year, day);
