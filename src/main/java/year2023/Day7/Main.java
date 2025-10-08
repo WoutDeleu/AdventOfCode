@@ -1,27 +1,30 @@
 package year2023.Day7;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        solveFirst();
-        solveSecond();
+        var input = readInput("./src/main/java/year2023/Day7/input");
+
+        var part1 = solvePart1(input);
+        System.out.println("Part 1: " + part1);
+
+        var part2 = solvePart2(input);
+        System.out.println("Part 2: " + part2);
     }
 
-    private static void solveSecond() throws Exception {
-        List<Hand> hands = readCards("./src/main/java/year2023/Day7/input", true);
-        long score = calculateTotalRank(hands, true);
-        System.out.println("score: " + score);
+    static Object solvePart1(List<String> lines) throws Exception {
+        List<Hand> hands = parseCards(lines, false);
+        return calculateTotalRank(hands, false);
     }
 
-    private static void solveFirst() throws Exception {
-        List<Hand> hands = readCards("./src/main/java/year2023/Day7/input", false);
-        long score = calculateTotalRank(hands, false);
-        System.out.println("score: " + score);
+    static Object solvePart2(List<String> lines) throws Exception {
+        List<Hand> hands = parseCards(lines, true);
+        return calculateTotalRank(hands, true);
     }
 
     static long calculateTotalRank(List<Hand> hands, boolean secondSolution) {
@@ -33,13 +36,16 @@ public class Main {
         return totalScore;
     }
 
-    static List<Hand> readCards(String path, boolean secondSolution) throws Exception {
-        Scanner sc = new Scanner(new File(path));
+    static List<Hand> parseCards(List<String> lines, boolean secondSolution) throws Exception {
         List<Hand> cards = new ArrayList<>();
-        while (sc.hasNextLine()) {
-            String[] line = sc.nextLine().split(" ");
-            cards.add(new Hand(line[0].toCharArray(), Integer.parseInt(line[1]), secondSolution));
+        for (String line : lines) {
+            String[] parts = line.split(" ");
+            cards.add(new Hand(parts[0].toCharArray(), Integer.parseInt(parts[1]), secondSolution));
         }
         return cards;
+    }
+
+    static List<String> readInput(String path) throws IOException {
+        return Files.readAllLines(Path.of(path));
     }
 }

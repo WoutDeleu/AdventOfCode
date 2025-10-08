@@ -1,5 +1,7 @@
 package year2024.Day8;
 
+import static aoc.utils.GridUtils.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -7,22 +9,11 @@ import java.util.Stack;
 public class Util {
 
   public static boolean inRange(int[] antinode, char[][] grid) {
-    return antinode[0] >= 0
-      && antinode[0] < grid.length
-      && antinode[1] >= 0
-      && antinode[1] < grid[0].length;
+    return inBounds(antinode[0], antinode[1], grid);
   }
 
   public static int countAntinodes(char[][] grid) {
-    int count = 0;
-    for (char[] row : grid) {
-      for (char c : row) {
-        if (c == '#') {
-          count++;
-        }
-      }
-    }
-    return count;
+    return countChar(grid, '#');
   }
 
   public static Stack<int[]> deepCopy(Stack<int[]> ints) {
