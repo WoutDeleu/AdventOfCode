@@ -28,50 +28,43 @@ if [ $# -eq 3 ] && [ "$3" == "--fetch" ]; then
     FETCH_INPUT=true
 fi
 
-# Pad day with leading zero
-DAY_PADDED=$(printf "%02d" $DAY)
-
 echo -e "${GREEN}Setting up Advent of Code $YEAR - Day $DAY${NC}"
 
 # Create directory structure
-SRC_DIR="src/main/java/aoc/year$YEAR"
-TEST_DIR="src/test/java/aoc/year$YEAR"
-RESOURCE_DIR="src/main/resources/inputs/$YEAR"
+SRC_DIR="src/main/java/year$YEAR/Day$DAY"
+TEST_DIR="src/test/java/year$YEAR/Day$DAY"
 
 echo -e "${YELLOW}Creating directories...${NC}"
 mkdir -p "$SRC_DIR"
 mkdir -p "$TEST_DIR"
-mkdir -p "$RESOURCE_DIR"
 
 # Generate source file from template
-SRC_FILE="$SRC_DIR/Day$DAY_PADDED.java"
+SRC_FILE="$SRC_DIR/Main.java"
 if [ -f "$SRC_FILE" ]; then
     echo -e "${YELLOW}Warning: $SRC_FILE already exists, skipping...${NC}"
 else
     echo -e "${YELLOW}Creating $SRC_FILE...${NC}"
     sed -e "s/{{YEAR}}/$YEAR/g" \
         -e "s/{{DAY}}/$DAY/g" \
-        -e "s/{{DAY_PADDED}}/$DAY_PADDED/g" \
         templates/Day.java.template > "$SRC_FILE"
     echo -e "${GREEN}✓ Created $SRC_FILE${NC}"
 fi
 
 # Generate test file from template
-TEST_FILE="$TEST_DIR/Day${DAY_PADDED}Test.java"
+TEST_FILE="$TEST_DIR/MainTest.java"
 if [ -f "$TEST_FILE" ]; then
     echo -e "${YELLOW}Warning: $TEST_FILE already exists, skipping...${NC}"
 else
     echo -e "${YELLOW}Creating $TEST_FILE...${NC}"
     sed -e "s/{{YEAR}}/$YEAR/g" \
         -e "s/{{DAY}}/$DAY/g" \
-        -e "s/{{DAY_PADDED}}/$DAY_PADDED/g" \
         templates/DayTest.java.template > "$TEST_FILE"
     echo -e "${GREEN}✓ Created $TEST_FILE${NC}"
 fi
 
 # Handle input files
-INPUT_FILE="$RESOURCE_DIR/day$DAY_PADDED.txt"
-TEST_INPUT_FILE="$RESOURCE_DIR/day${DAY_PADDED}_test.txt"
+INPUT_FILE="$SRC_DIR/input"
+TEST_INPUT_FILE="$TEST_DIR/input"
 
 if [ "$FETCH_INPUT" == true ]; then
     echo -e "${YELLOW}Fetching input from Advent of Code...${NC}"
@@ -130,5 +123,5 @@ if [ "$FETCH_INPUT" == false ]; then
     echo "   Or run: ./setup-day.sh $YEAR $DAY --fetch"
 fi
 echo "3. Edit solution in: $SRC_FILE"
-echo "4. Run with: cd src/main/java && java aoc.year$YEAR.Day$DAY_PADDED"
+echo "4. Run with: mvn exec:java -Dexec.mainClass=\"year$YEAR.Day$DAY.Main\""
 echo ""
