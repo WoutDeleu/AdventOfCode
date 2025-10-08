@@ -1,80 +1,137 @@
-# Advent of Code 🎄
+# Advent of Code - Java Solutions 🎄
 
-## Introduction
+My solutions for [Advent of Code](https://adventofcode.com/) puzzles, written in Java.
 
-Welcome to Advent of Code, an annual programming challenge by Eric Wastl. Solve small puzzles in your favorite programming language and embark on a coding adventure! 🚀
-
-## About Advent of Code
-
-Advent of Code offers diverse puzzles for various skill sets. Whether you're an enthusiast or a seasoned developer, these challenges are designed for fun and learning. No computer science background required—just bring your coding knowledge and problem-solving skills.
-
-## Challenges
-### 2023
-- [Day 1](Challenges/2023/Day1.md)
-- [Day 2](Challenges/2023/Day2.md)
-- [Day 3](Challenges/2023/Day3.md)
-- [Day 4](Challenges/2023/Day4.md)
-- [Day 5](Challenges/2023/Day5.md)
-- [Day 6](Challenges/2023/Day6.md)
-- [Day 7](Challenges/2023/Day7.md)
-- [Day 8](Challenges/2023/Day8.md)
-- [Day 9](Challenges/2023/Day9.md)
-- [Day 10](Challenges/2023/Day10.md)
-- [Day 11](Challenges/2023/Day11.md)
-- [Day 12](Challenges/2023/Day12.md)
-- [Day 13](Challenges/2023/Day13.md)
-- [Day 14](Challenges/2023/Day14.md)
-- [Day 15](Challenges/2023/Day15.md)
-- [Day 16](Challenges/2023/Day16.md)
-- [Day 17](Challenges/2023/Day17.md)
-- [Day 18](Challenges/2023/Day18.md)
-- [Day 19](Challenges/2023/Day19.md)
-- [Day 20](Challenges/2023/Day20.md)
-- [Day 21](Challenges/2023/Day21.md)
-- [Day 22](Challenges/2023/Day22.md)
-- [Day 23](Challenges/2023/Day23.md)
-- [Day 24](Challenges/2023/Day24.md)
-- [Day 25](Challenges/2023/Day25.md)
-
+## 🎯 Progress
 
 ### 2024
-- [Day 1](Challenges/2024/Day1.md)
-- [Day 2](Challenges/2024/Day2.md)
-- [Day 3](Challenges/2024/Day3.md)
-- [Day 4](Challenges/2024/Day4.md)
-- [Day 5](Challenges/2024/Day5.md)
-- [Day 6](Challenges/2024/Day6.md)
-- [Day 7](Challenges/2024/Day7.md)
-- [Day 8](Challenges/2024/Day8.md)
-- [Day 9](Challenges/2024/Day9.md)
-- [Day 10](Challenges/2024/Day10.md)
-- [Day 11](Challenges/2024/Day11.md)
-- [Day 12](Challenges/2024/Day12.md)
-- [Day 13](Challenges/2024/Day13.md)
-- [Day 14](Challenges/2024/Day14.md)
-- [Day 15](Challenges/2024/Day15.md)
-- [Day 16](Challenges/2024/Day16.md)
-- [Day 17](Challenges/2024/Day17.md)
-- [Day 18](Challenges/2024/Day18.md)
-- [Day 19](Challenges/2024/Day19.md)
-- [Day 20](Challenges/2024/Day20.md)
-- [Day 21](Challenges/2024/Day21.md)
-- [Day 22](Challenges/2024/Day22.md)
-- [Day 23](Challenges/2024/Day23.md)
-- [Day 24](Challenges/2024/Day24.md)
-- [Day 25](Challenges/2024/Day25.md)
+**12 / 25 days completed** ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 
-## Credits
+| Day | Status | Day | Status | Day | Status | Day | Status |
+|-----|--------|-----|--------|-----|--------|-----|--------|
+| [1](src/main/java/year2024/Day1) | ✅ | [7](src/main/java/year2024/Day7) | ✅ | 13 | ⬜ | 19 | ⬜ |
+| [2](src/main/java/year2024/Day2) | ✅ | [8](src/main/java/year2024/Day8) | ✅ | 14 | ⬜ | 20 | ⬜ |
+| [3](src/main/java/year2024/Day3) | ✅ | [9](src/main/java/year2024/Day9) | ✅ | 15 | ⬜ | 21 | ⬜ |
+| [4](src/main/java/year2024/Day4) | ✅ | [10](src/main/java/year2024/Day10) | ✅ | 16 | ⬜ | 22 | ⬜ |
+| [5](src/main/java/year2024/Day5) | ✅ | [11](src/main/java/year2024/Day11) | ✅ | 17 | ⬜ | 23 | ⬜ |
+| [6](src/main/java/year2024/Day6) | ✅ | [12](src/main/java/year2024/Day12) | ✅ | 18 | ⬜ | 24 | ⬜ |
+|     |        |     |        |     |        | 25 | ⬜ |
 
-- **Creator**: Eric Wastl
-- **Beta Testers**: Tim Giannetti, Ben Lucek, JP Burke, Aneurysm9, Andrew Skalski
-- **Community Managers**: Danielle Lucek, Aneurysm9
-- **Participants**: You! 🎮
+---
 
-## Legal
+## 🚀 Quick Start
 
-Advent of Code is a registered trademark. Elements are the sole property of Advent of Code. Link or reference puzzles freely, and your solution implementation remains your own.
+### Prerequisites
+- Java 20+
+- Maven
 
-Let the coding festivities begin! 🚀🌟
+### Running a Solution
+```bash
+# Compile and run a specific day
+cd src/main/java
+javac year2024/Day1/Main.java
+java year2024.Day1.Main
 
-[Advent of Code Website](https://adventofcode.com/)
+# Or use Maven
+mvn compile exec:java -Dexec.mainClass="year2024.Day1.Main"
+
+# Run tests
+mvn test
+```
+
+---
+
+## 📁 Project Structure
+
+```
+AdventOfCode/
+├── src/main/java/
+│   ├── year2023/          # 2023 solutions
+│   ├── year2024/          # 2024 solutions
+│   │   ├── Day1/
+│   │   │   ├── Main.java
+│   │   │   └── input
+│   │   ├── Day2/
+│   │   └── ...
+│   └── FileGenerator.java
+├── src/test/java/
+│   └── year2024/          # Unit tests
+│       ├── Day1/
+│       │   ├── MainTest.java
+│       │   └── input      # Test input
+│       └── ...
+├── Challenges/            # Problem descriptions
+│   ├── 2023/
+│   └── 2024/
+├── pom.xml
+└── README.md
+```
+
+Each day follows a consistent structure:
+- **Main.java**: Contains `solve_pt1()` and `solve_pt2()` methods
+- **input**: Your actual puzzle input
+- **MainTest.java**: Unit tests with example inputs
+
+---
+
+## 💻 Solution Template
+
+Each day's solution follows this pattern:
+
+```java
+package year2024.Day1;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) throws FileNotFoundException {
+        var input = new Main().read("./src/main/java/year2024/Day1/input");
+        int pt1 = new Main().solve_pt1(input);
+        System.out.println("pt1: " + pt1);
+
+        int pt2 = new Main().solve_pt2(input);
+        System.out.println("pt2: " + pt2);
+    }
+
+    public int solve_pt1(String[] input) {
+        // Your solution here
+        return 0;
+    }
+
+    public int solve_pt2(String[] input) {
+        // Your solution here
+        return 0;
+    }
+
+    public String[] read(String path) throws FileNotFoundException {
+        var sc = new Scanner(new File(path));
+        // Read and parse input
+        return null;
+    }
+}
+```
+
+---
+
+## 🛠️ Development Tips
+
+### Testing Your Solution
+1. Add example input to `src/test/java/year2024/DayX/input`
+2. Run the test: `mvn test -Dtest=DayXTest`
+3. Once tests pass, run with actual input
+
+### Common Patterns
+- **Grid problems**: Use 2D arrays or custom Coordinate classes
+- **Path finding**: BFS/DFS with visited sets
+- **Parsing**: Scanner for input, split/regex for parsing
+- **Performance**: Use HashMaps and HashSets for O(1) lookups
+
+---
+
+## 📚 About Advent of Code
+
+[Advent of Code](https://adventofcode.com/) is an annual coding event with daily programming puzzles throughout December. Each puzzle has two parts, and solutions can be implemented in any programming language.
+
+**Created by Eric Wastl** • [adventofcode.com](https://adventofcode.com/)
