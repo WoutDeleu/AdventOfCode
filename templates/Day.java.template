@@ -1,0 +1,28 @@
+package aoc.year{{YEAR}};
+
+import aoc.Solution;
+
+import java.util.List;
+
+public class Day{{DAY_PADDED}} extends Solution {
+
+    public Day{{DAY_PADDED}}() {
+        super({{YEAR}}, {{DAY}});
+    }
+
+    @Override
+    public Object solvePart1(List<String> input) {
+        // TODO: Implement part 1
+        return 0;
+    }
+
+    @Override
+    public Object solvePart2(List<String> input) {
+        // TODO: Implement part 2
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        new Day{{DAY_PADDED}}().solve();
+    }
+}

@@ -1,0 +1,24 @@
+package aoc.year{{YEAR}};
+
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
+public class Day{{DAY_PADDED}}Test {
+
+    @Test
+    public void testPart1() {
+        Day{{DAY_PADDED}} solution = new Day{{DAY_PADDED}}();
+        // TODO: Update expected value
+        // Object result = solution.solvePart1(InputReader.readLines({{YEAR}}, {{DAY}}, true));
+        // assertEquals(expectedValue, result);
+    }
+
+    @Test
+    public void testPart2() {
+        Day{{DAY_PADDED}} solution = new Day{{DAY_PADDED}}();
+        // TODO: Update expected value
+        // Object result = solution.solvePart2(InputReader.readLines({{YEAR}}, {{DAY}}, true));
+        // assertEquals(expectedValue, result);
+    }
+}
