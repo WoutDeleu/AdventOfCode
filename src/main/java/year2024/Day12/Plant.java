@@ -1,5 +1,7 @@
 package year2024.Day12;
 
+import aoc.utils.Coordinate;
+
 public class Plant {
   private final Coordinate coordinate;
   private char plant;
@@ -13,8 +15,8 @@ public class Plant {
 
   private void countFences(char[][] field) {
     int count = 0;
-    int r = coordinate.r();
-    int c = coordinate.c();
+    int r = coordinate.row;
+    int c = coordinate.col;
     for (int i = r - 1; i <= r + 1; i++) {
       for (int j = c - 1; j <= c + 1; j++) {
         if ((j != c && i != r) || (j == c && i == r)) {
@@ -34,7 +36,7 @@ public class Plant {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Plant that)) return false;
-    return coordinate.r() == that.coordinate.r() && coordinate.c() == that.coordinate.c();
+    return coordinate.row == that.coordinate.row && coordinate.col == that.coordinate.col;
   }
 
   char getPlant() {
@@ -55,7 +57,7 @@ public class Plant {
 
   @Override
   public int hashCode() {
-    return 31 * coordinate.r() + coordinate.c(); // Simple hash code based on row and column
+    return 31 * coordinate.row + coordinate.col; // Simple hash code based on row and column
   }
 
   Coordinate getCoordinate() {

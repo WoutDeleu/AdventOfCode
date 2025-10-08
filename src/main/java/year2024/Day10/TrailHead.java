@@ -1,5 +1,8 @@
 package year2024.Day10;
 
+import static aoc.utils.GridUtils.*;
+
+import aoc.utils.Coordinate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,10 +51,10 @@ public class TrailHead {
     for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
         if (Math.abs(i) + Math.abs(j) == 1) { // Only consider direct neighbors
-          int newRow = c.row() + i;
-          int newCol = c.col() + j;
+          int newRow = c.row + i;
+          int newCol = c.col + j;
           if (isValidCoordinate(newRow, newCol, input)
-              && isGradualUphillSlope(input[c.row()][c.col()], input[newRow][newCol])) {
+              && isGradualUphillSlope(input[c.row][c.col], input[newRow][newCol])) {
             adjacent.add(new Coordinate(newRow, newCol));
           }
         }
@@ -64,7 +67,7 @@ public class TrailHead {
   private void followPath(int[][] map, Path p) {
     List<Coordinate> queue = getAdjacentCoordinates(p.getLastCoordinate(), map);
     for (Coordinate coordinate : queue) {
-      if (map[coordinate.row()][coordinate.col()] == 9) {
+      if (map[coordinate.row][coordinate.col] == 9) {
         p.addCoordinate(coordinate);
         this.paths.add(new Path(p));
         p.removeCoordinate(coordinate);
@@ -84,8 +87,8 @@ public class TrailHead {
   private void followTrail(int row, int col, int[][] map, Set<Coordinate> visited) {
     List<Coordinate> queue = getAdjacentCoordinates(row, col, map, visited);
     for (Coordinate coordinate : queue) {
-      row = coordinate.row();
-      col = coordinate.col();
+      row = coordinate.row;
+      col = coordinate.col;
       if (map[row][col] == 9) {
         this.addScore();
       }
@@ -122,6 +125,6 @@ public class TrailHead {
   }
 
   private boolean isValidCoordinate(int newRow, int newCol, int[][] input) {
-    return newRow >= 0 && newRow < input.length && newCol >= 0 && newCol < input[newRow].length;
+    return inBounds(newRow, newCol, input.length, input[0].length);
   }
 }

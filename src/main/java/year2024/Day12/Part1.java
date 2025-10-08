@@ -1,5 +1,6 @@
 package year2024.Day12;
 
+import aoc.utils.Coordinate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,8 +44,8 @@ public class Part1 {
     Plant plant, char[][] field, Map<Coordinate, Plant> garden, Set<Plant> visited) {
     Queue<Plant> queue = new LinkedList<>();
     char currentChar = plant.getPlant();
-    int r = plant.getCoordinate().r();
-    int c = plant.getCoordinate().c();
+    int r = plant.getCoordinate().row;
+    int c = plant.getCoordinate().col;
     for (int i = r - 1; i <= r + 1; i++) {
       for (int j = c - 1; j <= c + 1; j++) {
         if ((j != c && i != r) || (j == c && i == r)) {
