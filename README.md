@@ -2,9 +2,23 @@
 
 Clean, utility-driven solutions for [Advent of Code](https://adventofcode.com/) puzzles.
 
-## 🎯 Progress - 2024
+---
 
-**12 / 25 days completed** ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
+## 📋 Table of Contents
+
+- [Progress](#-progress)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Utility Classes](#-utility-classes)
+- [Solution Template](#-solution-template)
+- [Complete Workflow](#%EF%B8%8F-complete-workflow)
+- [About Advent of Code](#-about-advent-of-code)
+
+---
+
+## 🎯 Progress
+
+### 2024 - **12 / 25 days** ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 
 | Day | Status | Day | Status | Day | Status | Day | Status |
 |-----|--------|-----|--------|-----|--------|-----|--------|
@@ -14,6 +28,30 @@ Clean, utility-driven solutions for [Advent of Code](https://adventofcode.com/) 
 | [4](src/main/java/year2024/Day4) | ✅ | [10](src/main/java/year2024/Day10) | ✅ | 16 | ⬜ | 22 | ⬜ |
 | [5](src/main/java/year2024/Day5) | ✅ | [11](src/main/java/year2024/Day11) | ✅ | 17 | ⬜ | 23 | ⬜ |
 | [6](src/main/java/year2024/Day6) | ✅ | [12](src/main/java/year2024/Day12) | ✅ | 18 | ⬜ | 24 | ⬜ |
+|     |        |     |        |     |        | 25 | ⬜ |
+
+### 2023 - **9 / 25 days** ⭐⭐⭐⭐⭐⭐⭐⭐⭐
+
+| Day | Status | Day | Status | Day | Status | Day | Status |
+|-----|--------|-----|--------|-----|--------|-----|--------|
+| [1](src/main/java/year2023/Day1) | ✅ | [7](src/main/java/year2023/Day7) | ✅ | 13 | ⬜ | 19 | ⬜ |
+| [2](src/main/java/year2023/Day2) | ✅ | [8](src/main/java/year2023/Day8) | ✅ | 14 | ⬜ | 20 | ⬜ |
+| [3](src/main/java/year2023/Day3) | ✅ | [9](src/main/java/year2023/Day9) | ✅ | 15 | ⬜ | 21 | ⬜ |
+| [4](src/main/java/year2023/Day4) | ✅ | 10 | ⬜ | 16 | ⬜ | 22 | ⬜ |
+| [5](src/main/java/year2023/Day5) | ✅ | 11 | ⬜ | 17 | ⬜ | 23 | ⬜ |
+| [6](src/main/java/year2023/Day6) | ✅ | 12 | ⬜ | 18 | ⬜ | 24 | ⬜ |
+|     |        |     |        |     |        | 25 | ⬜ |
+
+### 2015 - **1 / 25 days** ⭐
+
+| Day | Status | Day | Status | Day | Status | Day | Status |
+|-----|--------|-----|--------|-----|--------|-----|--------|
+| [1](src/main/java/year2015/Day1) | ✅ | 7 | ⬜ | 13 | ⬜ | 19 | ⬜ |
+| 2 | ⬜ | 8 | ⬜ | 14 | ⬜ | 20 | ⬜ |
+| 3 | ⬜ | 9 | ⬜ | 15 | ⬜ | 21 | ⬜ |
+| 4 | ⬜ | 10 | ⬜ | 16 | ⬜ | 22 | ⬜ |
+| 5 | ⬜ | 11 | ⬜ | 17 | ⬜ | 23 | ⬜ |
+| 6 | ⬜ | 12 | ⬜ | 18 | ⬜ | 24 | ⬜ |
 |     |        |     |        |     |        | 25 | ⬜ |
 
 ---
