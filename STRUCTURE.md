@@ -22,7 +22,10 @@ AdventOfCode/
 │   │   ├── Day2/
 │   │   └── ...                       # Days 1-12 use this format
 │   │
-│   └── year2023/                     # 2023 solutions (old structure)
+│   ├── year2023/                     # 2023 solutions (old structure)
+│   │
+│   └── year2015/                     # 2015 solutions (old structure)
+│       └── Day1/
 │
 ├── src/main/resources/
 │   └── inputs/                       # NEW structure inputs
@@ -106,10 +109,11 @@ This creates:
 
 ## 🔍 Finding Solutions
 
-### Old structure (Days 1-12, 2023):
+### Old structure (2015, 2023, 2024 Days 1-12):
 ```bash
 # Run
 mvn exec:java -Dexec.mainClass="year2024.Day1.Main"
+mvn exec:java -Dexec.mainClass="year2015.Day1.Main"
 
 # Test
 mvn test -Dtest=year2024.Day1.MainTest
@@ -132,6 +136,9 @@ mvn test -Dtest=Day13Test
 
 ### 2023
 - Various days completed using old structure
+
+### 2015
+- **Day 1**: Completed using old structure (refactored from Intro2015)
 
 ## 🚀 Migration Note
 
