@@ -2,6 +2,8 @@ package year2024.Day9;
 
 import static year2024.Day9.Utils.printLayout;
 
+import aoc.utils.ParsingUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +34,7 @@ public class Main {
 
     private static int[] parseInput(List<String> lines) {
         String line = lines.get(0);
-        return line.chars().map(c -> charToInt((char) c)).toArray();
+        return line.chars().map(c -> ParsingUtils.charToDigit((char) c)).toArray();
     }
 
     private static int[] compactSpaceLayout(char[] spaceLayout) {
@@ -56,7 +58,7 @@ public class Main {
     }
 
     private static int[] getInts(StringBuilder compactedLayout) {
-        return compactedLayout.toString().chars().map(c -> charToInt((char) c)).toArray();
+        return compactedLayout.toString().chars().map(c -> ParsingUtils.charToDigit((char) c)).toArray();
     }
 
     private static long checksum(int[] layout) {
@@ -65,10 +67,6 @@ public class Main {
             checkSum += (long) layout[i] * i;
         }
         return checkSum;
-    }
-
-    private static int charToInt(char c) {
-        return c - '0';
     }
 
     private static char[] createSpaceLayout(int[] input) {

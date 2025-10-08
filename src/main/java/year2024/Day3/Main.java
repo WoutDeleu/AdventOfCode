@@ -1,5 +1,7 @@
 package year2024.Day3;
 
+import aoc.utils.ParsingUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,11 +30,8 @@ public class Main {
             String foundMatch = matcher.group();
 
             if (foundMatch.startsWith("mul")) {
-                // Replaces everything that is not a digit or a comma
-                String[] numbers = foundMatch.replaceAll("[^\\d+,]", "").split(",");
-                int num1 = Integer.parseInt(numbers[0]);
-                int num2 = Integer.parseInt(numbers[1]);
-                sum += num1 * num2;
+                List<Integer> numbers = ParsingUtils.extractInts(foundMatch);
+                sum += numbers.get(0) * numbers.get(1);
             }
         }
         return sum;
@@ -55,11 +54,8 @@ public class Main {
             }
 
             if (enabled && foundMatch.startsWith("mul")) {
-                // Replaces everything that is not a digit or a comma
-                String[] numbers = foundMatch.replaceAll("[^\\d+,]", "").split(",");
-                int num1 = Integer.parseInt(numbers[0]);
-                int num2 = Integer.parseInt(numbers[1]);
-                sum += num1 * num2;
+                List<Integer> numbers = ParsingUtils.extractInts(foundMatch);
+                sum += numbers.get(0) * numbers.get(1);
             }
         }
         return sum;

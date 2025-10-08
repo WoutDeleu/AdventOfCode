@@ -1,5 +1,8 @@
 package year2024.Day6;
 
+import aoc.utils.GridUtils;
+import aoc.utils.ParsingUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,7 +31,7 @@ public class Main {
         do {
             i += getDirection(grid[previousI][previousJ])[0];
             j += getDirection(grid[previousI][previousJ])[1];
-            if(i >= 0 && i < grid.length && j >= 0 && j < grid[i].length) {
+            if(GridUtils.inBounds(i, j, grid)) {
                 if (grid[i][j] == 'X' || grid[i][j] == '.') {
                     grid[i][j] = grid[previousI][previousJ];
                     grid[previousI][previousJ] = 'X';
@@ -112,7 +115,7 @@ public class Main {
         do {
             i += getDirection(grid[previousI][previousJ])[0];
             j += getDirection(grid[previousI][previousJ])[1];
-            if(i >= 0 && i < grid.length && j >= 0 && j < grid[i].length) {
+            if(GridUtils.inBounds(i, j, grid)) {
                 if (grid[i][j] == 'X' || grid[i][j] == '.') {
                     grid[i][j] = grid[previousI][previousJ];
                     grid[previousI][previousJ] = 'X';
@@ -129,23 +132,11 @@ public class Main {
     }
 
     private static char[][] parseInput(List<String> lines) {
-        char[][] grid = new char[lines.size()][];
-        for (int i = 0; i < lines.size(); i++) {
-            grid[i] = lines.get(i).toCharArray();
-        }
-        return grid;
+        return ParsingUtils.parseGrid(lines);
     }
 
     private static int countX(char[][] input) {
-        int count = 0;
-        for (char[] row : input) {
-            for (char c : row) {
-                if (c == 'X') {
-                    count++;
-                }
-            }
-        }
-        return count;
+        return GridUtils.countChar(input, 'X');
     }
 
     private static int[] findStartingCords(char[][] input) {
@@ -206,13 +197,7 @@ public class Main {
     }
 
     private static char[][] copyMatrix(char[][] input) {
-        var copyInput = new char[input.length][input[0].length];
-        for(int i = 0; i< input.length; i++) {
-            for (int j = 0; j< input[0].length; j++) {
-                copyInput[i][j] = input[i][j];
-            }
-        }
-        return copyInput;
+        return GridUtils.copyGrid(input);
     }
 
     static List<String> readInput(String path) throws IOException {

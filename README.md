@@ -28,41 +28,37 @@ My solutions for [Advent of Code](https://adventofcode.com/) puzzles, written in
 
 ### Setting Up a New Day
 
-**Option 1: Auto-fetch from Advent of Code (Recommended)**
-```bash
-# Set your session cookie (one-time setup)
-export AOC_SESSION='your_session_cookie_here'
+Use the **`setup-day.sh`** script to create everything automatically:
 
-# Fetch everything automatically!
-java FetchInput.java 2024 13
+```bash
+# Option 1: Create structure with empty input files
+./setup-day.sh 2024 13
+
+# Option 2: Auto-fetch your puzzle input (recommended)
+./setup-day.sh 2024 13 --fetch
 ```
 
 This **automatically**:
-- ✅ Downloads your **personal puzzle input**
-- ✅ Extracts **example input** from puzzle description
-- ✅ Creates directory structure
-- ✅ Generates `Main.java` and `MainTest.java` from templates
+- ✅ Creates directory structure (`year2024/Day13/`)
+- ✅ Generates `Main.java` from template
+- ✅ Generates `MainTest.java` from template
+- ✅ Creates empty `input` files (or fetches your actual input with `--fetch`)
 
-**Option 2: Manual setup**
-```bash
-# Create directories
-mkdir -p src/main/java/year2024/Day13
-mkdir -p src/test/java/year2024/Day13
+**Time:** ~30 seconds total! No more manual setup.
 
-# Create files and paste input manually
-touch src/main/java/year2024/Day13/{Main.java,input}
-touch src/test/java/year2024/Day13/{MainTest.java,input}
-```
+### One-Time Setup: Session Cookie
 
-### Getting Your Session Cookie
+To use `--fetch`, configure your AOC session cookie once:
+
 1. Log in to [adventofcode.com](https://adventofcode.com)
 2. Open browser DevTools (F12)
 3. Go to Application/Storage → Cookies → `https://adventofcode.com`
 4. Copy the value of the `session` cookie
 5. Add to your shell profile (~/.zshrc or ~/.bashrc):
    ```bash
-   export AOC_SESSION='your_cookie_value'
+   export AOC_SESSION='your_session_cookie_value'
    ```
+6. Reload terminal: `source ~/.zshrc`
 
 ### Running a Solution
 ```bash

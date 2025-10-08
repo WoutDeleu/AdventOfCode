@@ -1,5 +1,7 @@
 package year2024.Day2;
 
+import aoc.utils.ParsingUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,11 +41,8 @@ public class Main {
     private static List<int[]> parseInput(List<String> lines) {
         List<int[]> input = new ArrayList<>();
         for (String line : lines) {
-            String[] split = line.split(" ");
-            int[] card = new int[split.length];
-            for (int i = 0; i < split.length; i++) {
-                card[i] = Integer.parseInt(split[i]);
-            }
+            List<Integer> parsed = ParsingUtils.parseInts(line);
+            int[] card = parsed.stream().mapToInt(Integer::intValue).toArray();
             input.add(card);
         }
         return input;

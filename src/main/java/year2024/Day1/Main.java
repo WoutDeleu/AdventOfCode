@@ -25,9 +25,9 @@ public class Main {
         var list2 = new ArrayList<Integer>();
 
         for (String line : lines) {
-            String[] parts = line.split("\\s+");
-            list1.add(Integer.parseInt(parts[0]));
-            list2.add(Integer.parseInt(parts[1]));
+            List<Integer> parts = ParsingUtils.parseInts(line);
+            list1.add(parts.get(0));
+            list2.add(parts.get(1));
         }
 
         Collections.sort(list1);
@@ -45,9 +45,9 @@ public class Main {
         var list2 = new ArrayList<Integer>();
 
         for (String line : lines) {
-            String[] parts = line.split("\\s+");
-            list1.add(Integer.parseInt(parts[0]));
-            list2.add(Integer.parseInt(parts[1]));
+            List<Integer> parts = ParsingUtils.parseInts(line);
+            list1.add(parts.get(0));
+            list2.add(parts.get(1));
         }
 
         int simularityScore = 0;

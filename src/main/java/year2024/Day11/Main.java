@@ -1,5 +1,7 @@
 package year2024.Day11;
 
+import aoc.utils.ParsingUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,12 +40,7 @@ public class Main {
     }
 
     private static List<Long> parseInput(List<String> lines) {
-        List<Long> result = new ArrayList<>();
-        String[] parts = lines.get(0).split("\\s+");
-        for (String part : parts) {
-            result.add(Long.parseLong(part));
-        }
-        return result;
+        return ParsingUtils.parseLongs(lines.get(0));
     }
 
     private static boolean hasEvenNumberOfDigits(Long l) {

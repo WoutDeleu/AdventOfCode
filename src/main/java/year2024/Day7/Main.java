@@ -1,10 +1,11 @@
 package year2024.Day7;
 
+import aoc.utils.ParsingUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -55,11 +56,7 @@ public class Main {
         for (String line : lines) {
             String[] parts = line.split(":");
             Long sum = Long.parseLong(parts[0]);
-            var args =
-                Arrays.stream(parts[1].split(" "))
-                    .filter(string -> !string.isBlank())
-                    .map(Long::parseLong)
-                    .toList();
+            var args = ParsingUtils.parseLongs(parts[1]);
             result.add(new Equation(sum, new LinkedList<>(args)));
         }
         return result;

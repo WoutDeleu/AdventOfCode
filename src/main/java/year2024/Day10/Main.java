@@ -1,10 +1,11 @@
 package year2024.Day10;
 
+import aoc.utils.ParsingUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -38,11 +39,7 @@ public class Main {
     }
 
     private static int[][] parseInput(List<String> lines) {
-        int[][] map = new int[lines.size()][];
-        for (int i = 0; i < lines.size(); i++) {
-            map[i] = Arrays.stream(lines.get(i).split("")).mapToInt(Integer::parseInt).toArray();
-        }
-        return map;
+        return ParsingUtils.parseIntGrid(lines);
     }
 
     private static long calculateTotalPaths(List<TrailHead> trailheads) {

@@ -1,5 +1,7 @@
 package year2024.Day5;
 
+import aoc.utils.ParsingUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -98,9 +100,9 @@ public class Main {
             }
 
             if (parsingRules) {
-                String[] parts = line.split("\\|");
-                int key = Integer.parseInt(parts[0]);
-                int value = Integer.parseInt(parts[1]);
+                List<Integer> parts = ParsingUtils.parseInts(line, "\\|");
+                int key = parts.get(0);
+                int value = parts.get(1);
 
                 if(orderRules.containsKey(key)) {
                     orderRules.get(key).add(value);
@@ -108,11 +110,8 @@ public class Main {
                     orderRules.put(key, new ArrayList<>(List.of(value)));
                 }
             } else {
-                String[] parts = line.split(",");
-                int[] update = new int[parts.length];
-                for (int i = 0; i < parts.length; i++) {
-                    update[i] = Integer.parseInt(parts[i]);
-                }
+                List<Integer> parts = ParsingUtils.parseCSVInts(line);
+                int[] update = parts.stream().mapToInt(Integer::intValue).toArray();
                 updates.add(update);
             }
         }
