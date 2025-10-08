@@ -47,6 +47,17 @@ This **automatically**:
 
 To use `--fetch`, configure your AOC session cookie once:
 
+**Automated Setup (Recommended):**
+```bash
+./setup-session.sh
+```
+This script will:
+- Guide you through getting your session cookie
+- Automatically add it to your shell profile (~/.zshrc or ~/.bashrc)
+- Validate the cookie
+- Export it for immediate use
+
+**Manual Setup:**
 1. Log in to [adventofcode.com](https://adventofcode.com)
 2. Open browser DevTools (F12)
 3. Go to Application/Storage → Cookies → `https://adventofcode.com`
