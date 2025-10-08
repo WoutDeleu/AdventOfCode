@@ -1,2 +1,13 @@
 /target/
 /.idea/git_toolbox_prj.xml
+
+# Advent of Code inputs (unique per user, don't commit)
+src/main/resources/inputs/*/day*.txt
+# But allow test inputs (from examples, can be shared)
+!src/main/resources/inputs/*/day*_test.txt
+
+# macOS
+.DS_Store
+
+# Compiled Java
+*.class
