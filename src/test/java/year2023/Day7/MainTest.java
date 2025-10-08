@@ -1,14 +1,14 @@
 package year2023.Day7;
 
 import org.junit.Test;
-import java.io.IOException;
+import utils.InputReader;
 
 import static org.junit.Assert.*;
 
 public class MainTest {
     @Test
     public void testPart1() throws Exception {
-        var input = Main.readInput("./src/test/java/year2023/Day7/input");
+        var input = InputReader.readLines(2023, 7, true);
         var result = Main.solvePart1(input);
 
         System.out.println("Part 1 result: " + result);
@@ -17,7 +17,7 @@ public class MainTest {
 
     @Test
     public void testPart2() throws Exception {
-        var input = Main.readInput("./src/test/java/year2023/Day7/input");
+        var input = InputReader.readLines(2023, 7, true);
         var result = Main.solvePart2(input);
 
         System.out.println("Part 2 result: " + result);
@@ -26,7 +26,7 @@ public class MainTest {
 
     @Test
     public void testPart2WithTestInput() throws Exception {
-        var input = Main.readInput("./src/test/java/year2023/Day7/testInput");
+        var input = InputReader.readLines("./src/test/java/year2023/Day7/testInput");
         var result = Main.solvePart2(input);
 
         System.out.println("Part 2 result (testInput): " + result);
@@ -35,7 +35,7 @@ public class MainTest {
 
     @Test
     public void testPart2WithTestInput2() throws Exception {
-        var input = Main.readInput("./src/test/java/year2023/Day7/testInput2");
+        var input = InputReader.readLines("./src/test/java/year2023/Day7/testInput2");
         var result = Main.solvePart2(input);
 
         System.out.println("Part 2 result (testInput2): " + result);

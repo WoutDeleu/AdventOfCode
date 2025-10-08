@@ -1,11 +1,12 @@
-package year{{YEAR}}.Day{{DAY}};
+package year2018.Day2;
 
 import utils.InputReader;
+
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        var input = InputReader.readLines({{YEAR}}, {{DAY}});
+        var input = InputReader.readLines(2018, 2);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);

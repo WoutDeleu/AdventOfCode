@@ -17,13 +17,8 @@ Located in `src/main/java/aoc/utils/`:
 
 ```java
 // Static imports for convenience
-import static aoc.utils.GridUtils.*;
-import static aoc.utils.ParsingUtils.*;
-import static aoc.utils.MathUtils.*;
 
 // Regular imports
-import aoc.utils.Coordinate;
-import aoc.utils.Coordinate.Direction;
 ```
 
 ## 📖 Common Patterns
@@ -53,20 +48,22 @@ for (char[] row : grid) {
 ```
 
 **After:**
+
 ```java
-import static aoc.utils.GridUtils.*;
-import static aoc.utils.ParsingUtils.*;
+
 
 // Parse grid in one line
 char[][] grid = parseGrid(lines);
 
 // Simple bounds checking
-if (inBounds(row, col, grid)) {
-    // do something
-}
+if(
 
-// Simple printing
-printGrid(grid);
+        inBounds(row, col, grid)){
+        // do something
+        }
+
+        // Simple printing
+        printGrid(grid);
 ```
 
 ### Pattern 2: Coordinate/Position Tracking
@@ -89,22 +86,23 @@ for (int[] dir : directions) {
 ```
 
 **After:**
+
 ```java
-import aoc.utils.Coordinate;
-import aoc.utils.Coordinate.Direction;
+import utils.Coordinate;
+import utils.Coordinate.Direction;
 
 // Use built-in Coordinate
 Coordinate pos = new Coordinate(row, col);
 
-// Get neighbors easily
-Coordinate[] neighbors = pos.neighbors4();
+        // Get neighbors easily
+        Coordinate[] neighbors = pos.neighbors4();
 
-// Move in directions
-Coordinate newPos = pos.move(Direction.UP);
-Coordinate next = pos.move(Direction.RIGHT, 3); // Move 3 steps
+        // Move in directions
+        Coordinate newPos = pos.move(Direction.UP);
+        Coordinate next = pos.move(Direction.RIGHT, 3); // Move 3 steps
 
-// Calculate distance
-int dist = pos.manhattanDistance(otherPos);
+        // Calculate distance
+        int dist = pos.manhattanDistance(otherPos);
 ```
 
 ### Pattern 3: Parsing Input
@@ -126,20 +124,21 @@ while (m.find()) {
 ```
 
 **After:**
+
 ```java
-import static aoc.utils.ParsingUtils.*;
+
 
 // Parse space-separated ints
 List<Integer> numbers = parseInts(line);
 
-// Extract all integers from text
-List<Integer> extracted = extractInts(text);
+        // Extract all integers from text
+        List<Integer> extracted = extractInts(text);
 
-// Parse CSV
-List<Integer> values = parseCSVInts("1,2,3,4,5");
+        // Parse CSV
+        List<Integer> values = parseCSVInts("1,2,3,4,5");
 
-// Parse grid
-char[][] grid = parseGrid(lines);
+        // Parse grid
+        char[][] grid = parseGrid(lines);
 ```
 
 ### Pattern 4: Mathematical Operations
@@ -162,17 +161,18 @@ public long lcm(long a, long b) {
 ```
 
 **After:**
+
 ```java
-import static aoc.utils.MathUtils.*;
+
 
 // Use built-in
 long result = lcm(12, 18, 24); // Multiple numbers
-long g = gcd(48, 18);
+        long g = gcd(48, 18);
 
-// Other useful functions
-boolean prime = isPrime(17);
-long sum = sumRange(1, 100);
-List<Long> divs = divisors(24);
+        // Other useful functions
+        boolean prime = isPrime(17);
+        long sum = sumRange(1, 100);
+        List<Long> divs = divisors(24);
 ```
 
 ## 💡 Real-World Examples
@@ -180,100 +180,101 @@ List<Long> divs = divisors(24);
 ### Example: Grid Search
 
 ```java
-import static aoc.utils.GridUtils.*;
-import static aoc.utils.ParsingUtils.*;
+
 
 public class DayX {
-    public int solve_pt1(List<String> input) {
-        // Parse grid
-        char[][] grid = parseGrid(input);
 
-        // Find starting position
-        int[] start = findFirst(grid, 'S');
+   public int solve_pt1(List<String> input) {
+      // Parse grid
+      char[][] grid = parseGrid(input);
 
-        // Count occurrences
-        int targetCount = countChar(grid, '#');
+      // Find starting position
+      int[] start = findFirst(grid, 'S');
 
-        // Get all positions of a character
-        List<int[]> walls = findAll(grid, '#');
+      // Count occurrences
+      int targetCount = countChar(grid, '#');
 
-        // Print for debugging
-        printGrid(grid);
+      // Get all positions of a character
+      List<int[]> walls = findAll(grid, '#');
 
-        return targetCount;
-    }
+      // Print for debugging
+      printGrid(grid);
+
+      return targetCount;
+   }
 }
 ```
 
 ### Example: Path Finding with Coordinates
 
 ```java
-import aoc.utils.Coordinate;
-import aoc.utils.Coordinate.Direction;
-import static aoc.utils.GridUtils.*;
+import utils.Coordinate;
+import utils.Coordinate.Direction;
 
 public class DayY {
-    public int solve_pt1(List<String> input) {
-        char[][] grid = parseGrid(input);
 
-        // Start at top-left
-        Coordinate pos = new Coordinate(0, 0);
-        Direction facing = Direction.RIGHT;
+   public int solve_pt1(List<String> input) {
+      char[][] grid = parseGrid(input);
 
-        // Move around
-        while (pos.inBounds(grid.length, grid[0].length)) {
-            // Check what's ahead
-            Coordinate next = pos.move(facing);
+      // Start at top-left
+      Coordinate pos = new Coordinate(0, 0);
+      Direction facing = Direction.RIGHT;
 
-            if (!next.inBounds(grid.length, grid[0].length)) {
-                break;
-            }
+      // Move around
+      while (pos.inBounds(grid.length, grid[0].length)) {
+         // Check what's ahead
+         Coordinate next = pos.move(facing);
 
-            if (grid[next.row][next.col] == '#') {
-                // Turn right if blocked
-                facing = facing.turnRight();
-            } else {
-                // Move forward
-                pos = next;
-            }
-        }
+         if (!next.inBounds(grid.length, grid[0].length)) {
+            break;
+         }
 
-        return 0;
-    }
+         if (grid[next.row][next.col] == '#') {
+            // Turn right if blocked
+            facing = facing.turnRight();
+         } else {
+            // Move forward
+            pos = next;
+         }
+      }
+
+      return 0;
+   }
 }
 ```
 
 ### Example: Complex Parsing
 
 ```java
-import static aoc.utils.ParsingUtils.*;
+
 
 public class DayZ {
-    public int solve_pt1(List<String> input) {
-        // Split into blocks by blank lines
-        List<List<String>> blocks = splitBlocks(input);
 
-        int total = 0;
-        for (List<String> block : blocks) {
-            // Extract numbers from text
-            String line = block.get(0);
-            List<Integer> nums = extractInts(line);
+   public int solve_pt1(List<String> input) {
+      // Split into blocks by blank lines
+      List<List<String>> blocks = splitBlocks(input);
 
-            // Parse coordinates
-            if (line.contains(",")) {
-                int[] coord = parseCoordinate("5,10");
-            }
+      int total = 0;
+      for (List<String> block : blocks) {
+         // Extract numbers from text
+         String line = block.get(0);
+         List<Integer> nums = extractInts(line);
 
-            // Parse ranges
-            if (line.contains("-")) {
-                int[] range = parseRange("1-100");
-            }
+         // Parse coordinates
+         if (line.contains(",")) {
+            int[] coord = parseCoordinate("5,10");
+         }
 
-            total += nums.stream().mapToInt(Integer::intValue).sum();
-        }
+         // Parse ranges
+         if (line.contains("-")) {
+            int[] range = parseRange("1-100");
+         }
 
-        return total;
-    }
+         total += nums.stream().mapToInt(Integer::intValue).sum();
+      }
+
+      return total;
+   }
 }
 ```
 
@@ -289,8 +290,9 @@ public record Coordinate(int row, int col) {
 ```
 
 Replace with:
+
 ```java
-import aoc.utils.Coordinate;
+
 // Use directly - it's feature-complete!
 ```
 
@@ -305,8 +307,9 @@ public class Utils {
 ```
 
 Replace with:
+
 ```java
-import static aoc.utils.GridUtils.*;
+
 // Use the shared utilities
 ```
 
@@ -314,8 +317,8 @@ import static aoc.utils.GridUtils.*;
 
 1. **Use static imports** for frequently-used methods:
    ```java
-   import static aoc.utils.GridUtils.*;
-   import static aoc.utils.ParsingUtils.*;
+
+
    ```
 
 2. **Combine utilities** for powerful one-liners:

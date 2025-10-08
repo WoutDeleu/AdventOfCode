@@ -50,21 +50,21 @@ mvn test -Dtest=year2024.Day13.MainTest
 ### Using Utilities
 
 ```java
-import static aoc.utils.GridUtils.*;
-import static aoc.utils.ParsingUtils.*;
-import aoc.utils.Coordinate;
+
 
 // Parse grid
 char[][] grid = parseGrid(lines);
 
-// Find positions
-List<int[]> positions = findAll(grid, '#');
+    // Find positions
+    List<int[]> positions = findAll(grid, '#');
 
 // Check bounds
-if (inBounds(row, col, grid)) { ... }
+if(
 
-// Count characters
-int count = countChar(grid, 'X');
+    inBounds(row, col, grid)){...}
+
+    // Count characters
+    int count = countChar(grid, 'X');
 ```
 
 See [UTILITIES_GUIDE.md](UTILITIES_GUIDE.md) for complete examples.

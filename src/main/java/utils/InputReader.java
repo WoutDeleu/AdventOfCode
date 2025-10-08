@@ -1,17 +1,14 @@
-package aoc.utils;
+package utils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InputReader {
 
     /**
-     * Reads input file from resources as a list of lines
+     * Reads input file from file system as a list of lines
      * @param year The year (e.g., 2024)
      * @param day The day (e.g., 1)
      * @return List of lines from the input file
@@ -21,19 +18,32 @@ public class InputReader {
     }
 
     /**
-     * Reads input file from resources as a list of lines
+     * Reads input file from file system as a list of lines
      * @param year The year (e.g., 2024)
      * @param day The day (e.g., 1)
      * @param isTest Whether to read test input
      * @return List of lines from the input file
      */
     public static List<String> readLines(int year, int day, boolean isTest) {
-        String filename = String.format("/inputs/%d/day%02d%s.txt", year, day, isTest ? "_test" : "");
-        try (InputStream is = InputReader.class.getResourceAsStream(filename);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-            return reader.lines().collect(Collectors.toList());
-        } catch (IOException | NullPointerException e) {
-            throw new RuntimeException("Failed to read input file: " + filename, e);
+        String basePath = isTest ? "./src/test/java" : "./src/main/java";
+        String path = String.format("%s/year%d/Day%d/input", basePath, year, day);
+        try {
+            return Files.readAllLines(Path.of(path));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read input file: " + path, e);
+        }
+    }
+
+    /**
+     * Reads input file from a custom path
+     * @param path The file path
+     * @return List of lines from the input file
+     */
+    public static List<String> readLines(String path) {
+        try {
+            return Files.readAllLines(Path.of(path));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read input file: " + path, e);
         }
     }
 

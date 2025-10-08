@@ -1,13 +1,12 @@
 package year2015.Day1;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import utils.InputReader;
+
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2015/Day1/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2015, 1);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -37,9 +36,5 @@ public class Main {
             if (floor < 0) break;
         }
         return count;
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 }

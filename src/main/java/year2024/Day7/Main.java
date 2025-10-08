@@ -1,18 +1,16 @@
 package year2024.Day7;
 
-import aoc.utils.ParsingUtils;
+import utils.InputReader;
+import utils.ParsingUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2024/Day7/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2024, 7);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -116,10 +114,6 @@ public class Main {
         String tempSumStr = String.valueOf(tempSum);
         String nextArgStr = String.valueOf(nextArg);
         return Long.parseLong(tempSumStr + nextArgStr);
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 
     public record Equation(Long sum, Queue<Long> args) {}

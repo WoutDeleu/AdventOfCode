@@ -132,9 +132,8 @@ export AOC_SESSION='your_session_cookie_here'
 Import shared utilities to reduce code duplication:
 
 ```java
-import static aoc.utils.GridUtils.*;
-import static aoc.utils.ParsingUtils.*;
-import aoc.utils.Coordinate;
+
+
 ```
 
 See [UTILITIES_GUIDE.md](UTILITIES_GUIDE.md) for detailed usage examples.

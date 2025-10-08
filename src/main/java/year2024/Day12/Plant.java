@@ -1,6 +1,6 @@
 package year2024.Day12;
 
-import aoc.utils.Coordinate;
+import utils.Coordinate;
 
 public class Plant {
   private final Coordinate coordinate;

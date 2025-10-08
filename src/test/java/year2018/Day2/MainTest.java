@@ -1,4 +1,4 @@
-package year2024.Day7;
+package year2018.Day2;
 
 import org.junit.Test;
 import utils.InputReader;
@@ -8,19 +8,21 @@ import static org.junit.Assert.*;
 public class MainTest {
     @Test
     public void testPart1() {
-        var input = InputReader.readLines(2024, 7, true);
+        var input = InputReader.readLines(2018, 2, true);
         var result = Main.solvePart1(input);
 
         System.out.println("Part 1 result: " + result);
-        assertEquals(3749L, result);
+        // TODO: Update expected value
+        // assertEquals(expectedValue, result);
     }
 
     @Test
     public void testPart2() {
-        var input = InputReader.readLines(2024, 7, true);
+        var input = InputReader.readLines(2018, 2, true);
         var result = Main.solvePart2(input);
 
         System.out.println("Part 2 result: " + result);
-        assertEquals(11387L, result);
+        // TODO: Update expected value
+        // assertEquals(expectedValue, result);
     }
 }

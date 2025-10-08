@@ -1,18 +1,16 @@
 package year2024.Day11;
 
-import aoc.utils.ParsingUtils;
+import utils.InputReader;
+import utils.ParsingUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static int BLINKING_COUNT = 25;
 
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2024/Day11/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2024, 11);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -69,9 +67,5 @@ public class Main {
         String firstHalf = stoneString.substring(0, mid);
         String secondHalf = stoneString.substring(mid);
         return new Long[] {Long.parseLong(firstHalf), Long.parseLong(secondHalf)};
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 }

@@ -1,4 +1,4 @@
-package aoc.utils;
+package utils;
 
 import java.util.List;
 

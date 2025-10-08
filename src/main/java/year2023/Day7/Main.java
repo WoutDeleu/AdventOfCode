@@ -1,14 +1,13 @@
 package year2023.Day7;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import utils.InputReader;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        var input = readInput("./src/main/java/year2023/Day7/input");
+        var input = InputReader.readLines(2023, 7);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -43,9 +42,5 @@ public class Main {
             cards.add(new Hand(parts[0].toCharArray(), Integer.parseInt(parts[1]), secondSolution));
         }
         return cards;
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 }

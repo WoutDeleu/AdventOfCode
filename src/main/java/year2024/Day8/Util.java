@@ -1,6 +1,6 @@
 package year2024.Day8;
 
-import static aoc.utils.GridUtils.*;
+import utils.GridUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,11 +9,11 @@ import java.util.Stack;
 public class Util {
 
   public static boolean inRange(int[] antinode, char[][] grid) {
-    return inBounds(antinode[0], antinode[1], grid);
+    return GridUtils.inBounds(antinode[0], antinode[1], grid);
   }
 
   public static int countAntinodes(char[][] grid) {
-    return countChar(grid, '#');
+    return GridUtils.countChar(grid, '#');
   }
 
   public static Stack<int[]> deepCopy(Stack<int[]> ints) {

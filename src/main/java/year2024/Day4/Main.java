@@ -1,18 +1,16 @@
 package year2024.Day4;
 
-import aoc.utils.GridUtils;
-import aoc.utils.ParsingUtils;
+import utils.GridUtils;
+import utils.InputReader;
+import utils.ParsingUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 public class Main {
     private static final char[] XMAS = new char[] { 'X', 'M', 'A', 'S' };
 
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2024/Day4/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2024, 4);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -86,9 +84,5 @@ public class Main {
 
     private static boolean checkSurroundingCellAreValid(int row, int col, char[][] input) {
         return GridUtils.inBounds(row-1, col-1, input) && GridUtils.inBounds(row+1, col+1, input);
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 }

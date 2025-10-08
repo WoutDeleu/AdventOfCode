@@ -1,6 +1,6 @@
 package year2024.Day10;
 
-import aoc.utils.Coordinate;
+import utils.Coordinate;
 import java.util.LinkedList;
 import java.util.List;
 

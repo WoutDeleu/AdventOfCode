@@ -2,16 +2,14 @@ package year2024.Day9;
 
 import static year2024.Day9.Utils.printLayout;
 
-import aoc.utils.ParsingUtils;
+import utils.InputReader;
+import utils.ParsingUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2024/Day9/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2024, 9);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -34,7 +32,7 @@ public class Main {
 
     private static int[] parseInput(List<String> lines) {
         String line = lines.get(0);
-        return line.chars().map(c -> ParsingUtils.charToDigit((char) c)).toArray();
+        return line.chars().map(c -> utils.ParsingUtils.charToDigit((char) c)).toArray();
     }
 
     private static int[] compactSpaceLayout(char[] spaceLayout) {
@@ -58,7 +56,7 @@ public class Main {
     }
 
     private static int[] getInts(StringBuilder compactedLayout) {
-        return compactedLayout.toString().chars().map(c -> ParsingUtils.charToDigit((char) c)).toArray();
+        return compactedLayout.toString().chars().map(c -> utils.ParsingUtils.charToDigit((char) c)).toArray();
     }
 
     private static long checksum(int[] layout) {
@@ -88,10 +86,6 @@ public class Main {
         }
 
         return spaceLayout.toString().toCharArray();
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 }
 

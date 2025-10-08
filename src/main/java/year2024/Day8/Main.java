@@ -1,19 +1,18 @@
 package year2024.Day8;
 
-import static aoc.utils.GridUtils.*;
-import static aoc.utils.ParsingUtils.*;
+import static utils.GridUtils.*;
+import static utils.ParsingUtils.*;
 import static year2024.Day8.Util.*;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import utils.InputReader;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2024/Day8/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2024, 8);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -69,9 +68,5 @@ public class Main {
         } else {
             return distanceVector.allAntisymmetricPoints(grid);
         }
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 }

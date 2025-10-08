@@ -1,6 +1,6 @@
 package year2024.Day12;
 
-import aoc.utils.Coordinate;
+import utils.Coordinate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;

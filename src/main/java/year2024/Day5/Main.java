@@ -1,18 +1,16 @@
 package year2024.Day5;
 
-import aoc.utils.ParsingUtils;
+import utils.InputReader;
+import utils.ParsingUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2024/Day5/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2024, 5);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -116,9 +114,5 @@ public class Main {
             }
         }
         return new Object[]{orderRules, updates};
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 }

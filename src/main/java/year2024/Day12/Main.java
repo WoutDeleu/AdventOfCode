@@ -1,12 +1,10 @@
 package year2024.Day12;
 
-import static aoc.utils.ParsingUtils.*;
+import static utils.ParsingUtils.*;
 import static year2024.Day12.Part1.createGarden;
 
-import aoc.utils.Coordinate;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import utils.Coordinate;
+import utils.InputReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,8 +14,8 @@ import java.util.Queue;
 import java.util.Set;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2024/Day12/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2024, 12);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -191,9 +189,5 @@ public class Main {
             }
         }
         return plants;
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
     }
 }

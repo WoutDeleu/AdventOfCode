@@ -1,8 +1,7 @@
 package year2024.Day10;
 
-import static aoc.utils.GridUtils.*;
-
-import aoc.utils.Coordinate;
+import utils.Coordinate;
+import utils.GridUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -125,6 +124,6 @@ public class TrailHead {
   }
 
   private boolean isValidCoordinate(int newRow, int newCol, int[][] input) {
-    return inBounds(newRow, newCol, input.length, input[0].length);
+    return GridUtils.inBounds(newRow, newCol, input.length, input[0].length);
   }
 }
