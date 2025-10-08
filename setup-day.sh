@@ -87,13 +87,17 @@ if [ "$FETCH_INPUT" == true ]; then
                 # Run setup-session.sh
                 ./setup-session.sh
 
-                # Check if it succeeded by verifying AOC_SESSION is now set
-                # Need to source the shell config to get the new variable
+                # Check if it succeeded by reading AOC_SESSION from shell config
+                # Don't source the file (may contain shell-specific syntax)
+                # Instead, extract just the AOC_SESSION export
                 if [ -f "$HOME/.zshrc" ]; then
-                    source "$HOME/.zshrc"
+                    AOC_SESSION=$(grep "export AOC_SESSION=" "$HOME/.zshrc" | tail -1 | sed "s/export AOC_SESSION=//g" | tr -d "'\"")
                 elif [ -f "$HOME/.bashrc" ]; then
-                    source "$HOME/.bashrc"
+                    AOC_SESSION=$(grep "export AOC_SESSION=" "$HOME/.bashrc" | tail -1 | sed "s/export AOC_SESSION=//g" | tr -d "'\"")
                 fi
+
+                # Export it for this session
+                export AOC_SESSION
 
                 # Check again if AOC_SESSION is now set
                 if [ -z "$AOC_SESSION" ]; then
@@ -171,12 +175,15 @@ if [ "$FETCH_INPUT" == true ]; then
                 if [[ $REPLY =~ ^[Yy]$ ]]; then
                     ./setup-session.sh
 
-                    # Reload session
+                    # Read AOC_SESSION from shell config (don't source - may have shell-specific syntax)
                     if [ -f "$HOME/.zshrc" ]; then
-                        source "$HOME/.zshrc"
+                        AOC_SESSION=$(grep "export AOC_SESSION=" "$HOME/.zshrc" | tail -1 | sed "s/export AOC_SESSION=//g" | tr -d "'\"")
                     elif [ -f "$HOME/.bashrc" ]; then
-                        source "$HOME/.bashrc"
+                        AOC_SESSION=$(grep "export AOC_SESSION=" "$HOME/.bashrc" | tail -1 | sed "s/export AOC_SESSION=//g" | tr -d "'\"")
                     fi
+
+                    # Export it for this session
+                    export AOC_SESSION
 
                     if [ -z "$AOC_SESSION" ]; then
                         echo -e "${RED}Session setup failed or was cancelled${NC}"
