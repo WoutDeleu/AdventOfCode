@@ -84,7 +84,7 @@ if [ "$FETCH_INPUT" == true ]; then
     fi
 
     # Fetch input using curl with retries
-    echo -e "${YELLOW}  Fetching from: https://adventofcode.com/$YEAR/day/$DAY/input${NC}"
+    echo -e "${YELLOW}  Fetching puzzle input from: https://adventofcode.com/$YEAR/day/$DAY/input${NC}"
 
     MAX_RETRIES=3
     RETRY_COUNT=0
@@ -107,7 +107,7 @@ if [ "$FETCH_INPUT" == true ]; then
         if [ "$HTTP_CODE" -eq 200 ]; then
             # Verify file is not empty and doesn't contain error message
             if [ -s "$INPUT_FILE" ] && ! grep -q "Please log in" "$INPUT_FILE" 2>/dev/null; then
-                echo -e "${GREEN}✓ Input fetched successfully to $INPUT_FILE${NC}"
+                echo -e "${GREEN}✓ Puzzle input fetched successfully${NC}"
                 SUCCESS=true
             else
                 echo -e "${RED}✗ Received invalid response (empty or error page)${NC}"
@@ -131,10 +131,50 @@ if [ "$FETCH_INPUT" == true ]; then
     done
 
     if [ "$SUCCESS" == false ]; then
-        echo -e "${RED}Failed to fetch input after $MAX_RETRIES attempts${NC}"
+        echo -e "${RED}Failed to fetch puzzle input after $MAX_RETRIES attempts${NC}"
         echo "Creating empty input file instead..."
         touch "$INPUT_FILE"
     fi
+
+    # Fetch test input from puzzle description
+    echo -e "${YELLOW}  Fetching test input from puzzle description...${NC}"
+
+    TEMP_HTML=$(mktemp)
+    HTTP_CODE=$(curl -s -w "%{http_code}" \
+        --connect-timeout 10 \
+        --max-time 30 \
+        -H "Cookie: session=$AOC_SESSION" \
+        -H "User-Agent: github.com/woutdeleu/AdventOfCode via setup-day.sh" \
+        -o "$TEMP_HTML" \
+        "https://adventofcode.com/$YEAR/day/$DAY" 2>&1)
+
+    if [ "$HTTP_CODE" -eq 200 ] && [ -s "$TEMP_HTML" ]; then
+        # Extract first code block from <pre><code>...</code></pre>
+        # Look for the first substantial code block (usually the example input)
+        TEST_INPUT=$(sed -n '/<pre><code>/,/<\/code><\/pre>/p' "$TEMP_HTML" | \
+            head -1 | \
+            sed -e 's/<pre><code>//g' -e 's/<\/code><\/pre>//g' \
+                -e 's/&lt;/</g' -e 's/&gt;/>/g' -e 's/&amp;/\&/g' -e 's/&quot;/"/g' \
+                -e 's/<em>//g' -e 's/<\/em>//g' | \
+            sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+        if [ -n "$TEST_INPUT" ] && [ ${#TEST_INPUT} -gt 10 ]; then
+            echo "$TEST_INPUT" > "$TEST_INPUT_FILE"
+            echo -e "${GREEN}✓ Test input extracted from puzzle description${NC}"
+            echo -e "${YELLOW}  ⚠ Please verify test input is correct!${NC}"
+        else
+            touch "$TEST_INPUT_FILE"
+            echo -e "${YELLOW}⚠ Could not extract test input, created empty file${NC}"
+            echo -e "${YELLOW}  Add test input from puzzle examples manually to: $TEST_INPUT_FILE${NC}"
+        fi
+    else
+        touch "$TEST_INPUT_FILE"
+        echo -e "${YELLOW}⚠ Could not fetch puzzle description (HTTP $HTTP_CODE)${NC}"
+        echo -e "${YELLOW}  Add test input manually to: $TEST_INPUT_FILE${NC}"
+    fi
+
+    rm -f "$TEMP_HTML"
+
 else
     # Create empty input file if it doesn't exist
     if [ ! -f "$INPUT_FILE" ]; then
@@ -144,15 +184,15 @@ else
     else
         echo -e "${YELLOW}Input file $INPUT_FILE already exists${NC}"
     fi
-fi
 
-# Always create empty test input file (must be filled manually)
-if [ ! -f "$TEST_INPUT_FILE" ]; then
-    touch "$TEST_INPUT_FILE"
-    echo -e "${GREEN}✓ Created empty $TEST_INPUT_FILE${NC}"
-    echo -e "${YELLOW}  Add test input from puzzle examples manually${NC}"
-else
-    echo -e "${YELLOW}Test input file $TEST_INPUT_FILE already exists${NC}"
+    # Create empty test input file
+    if [ ! -f "$TEST_INPUT_FILE" ]; then
+        touch "$TEST_INPUT_FILE"
+        echo -e "${GREEN}✓ Created empty $TEST_INPUT_FILE${NC}"
+        echo -e "${YELLOW}  Add test input from puzzle examples manually${NC}"
+    else
+        echo -e "${YELLOW}Test input file $TEST_INPUT_FILE already exists${NC}"
+    fi
 fi
 
 echo ""
@@ -160,8 +200,14 @@ echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}Setup complete! 🎄${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
+echo "Files created:"
+echo "  Solution: $SRC_FILE"
+echo "  Tests:    $TEST_FILE"
+echo "  Input:    $INPUT_FILE"
+echo "  Test In:  $TEST_INPUT_FILE"
+echo ""
 echo "Next steps:"
-echo "1. Add test input from puzzle examples to: $TEST_INPUT_FILE"
+echo "1. Verify test input in: $TEST_INPUT_FILE"
 if [ "$FETCH_INPUT" == false ]; then
     echo "2. Add puzzle input to: $INPUT_FILE"
     echo "   Or run: ./setup-day.sh $YEAR $DAY --fetch"
