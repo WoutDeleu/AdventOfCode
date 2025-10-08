@@ -73,23 +73,67 @@ if [ "$FETCH_INPUT" == true ]; then
     if [ -z "$AOC_SESSION" ]; then
         echo -e "${RED}Error: AOC_SESSION environment variable not set${NC}"
         echo "Please set it with your Advent of Code session cookie:"
-        echo "export AOC_SESSION='your_session_cookie_here'"
+        echo "  export AOC_SESSION='your_session_cookie_here'"
+        echo ""
+        echo "To get your session cookie:"
+        echo "  1. Log in to https://adventofcode.com"
+        echo "  2. Open browser DevTools (F12)"
+        echo "  3. Go to Application/Storage → Cookies"
+        echo "  4. Copy the 'session' cookie value"
         exit 1
     fi
 
-    # Fetch input using curl
-    HTTP_CODE=$(curl -s -w "%{http_code}" \
-        -H "Cookie: session=$AOC_SESSION" \
-        -H "User-Agent: github.com/woutdeleu/AdventOfCode" \
-        -o "$INPUT_FILE" \
-        "https://adventofcode.com/$YEAR/day/$DAY/input")
+    # Fetch input using curl with retries
+    echo -e "${YELLOW}  Fetching from: https://adventofcode.com/$YEAR/day/$DAY/input${NC}"
 
-    if [ "$HTTP_CODE" -eq 200 ]; then
-        echo -e "${GREEN}✓ Input fetched successfully to $INPUT_FILE${NC}"
-    else
-        echo -e "${RED}✗ Failed to fetch input (HTTP $HTTP_CODE)${NC}"
-        rm -f "$INPUT_FILE"
-        exit 1
+    MAX_RETRIES=3
+    RETRY_COUNT=0
+    SUCCESS=false
+
+    while [ $RETRY_COUNT -lt $MAX_RETRIES ] && [ "$SUCCESS" == false ]; do
+        if [ $RETRY_COUNT -gt 0 ]; then
+            echo -e "${YELLOW}  Retry attempt $RETRY_COUNT/$MAX_RETRIES...${NC}"
+            sleep 2
+        fi
+
+        HTTP_CODE=$(curl -s -w "%{http_code}" \
+            --connect-timeout 10 \
+            --max-time 30 \
+            -H "Cookie: session=$AOC_SESSION" \
+            -H "User-Agent: github.com/woutdeleu/AdventOfCode via setup-day.sh" \
+            -o "$INPUT_FILE" \
+            "https://adventofcode.com/$YEAR/day/$DAY/input" 2>&1)
+
+        if [ "$HTTP_CODE" -eq 200 ]; then
+            # Verify file is not empty and doesn't contain error message
+            if [ -s "$INPUT_FILE" ] && ! grep -q "Please log in" "$INPUT_FILE" 2>/dev/null; then
+                echo -e "${GREEN}✓ Input fetched successfully to $INPUT_FILE${NC}"
+                SUCCESS=true
+            else
+                echo -e "${RED}✗ Received invalid response (empty or error page)${NC}"
+                rm -f "$INPUT_FILE"
+                ((RETRY_COUNT++))
+            fi
+        elif [ "$HTTP_CODE" -eq 404 ]; then
+            echo -e "${RED}✗ Day $DAY not yet available for year $YEAR (HTTP 404)${NC}"
+            rm -f "$INPUT_FILE"
+            break
+        elif [ "$HTTP_CODE" -eq 400 ]; then
+            echo -e "${RED}✗ Invalid session cookie (HTTP 400)${NC}"
+            echo "Please check your AOC_SESSION value"
+            rm -f "$INPUT_FILE"
+            break
+        else
+            echo -e "${RED}✗ Failed to fetch input (HTTP $HTTP_CODE)${NC}"
+            rm -f "$INPUT_FILE"
+            ((RETRY_COUNT++))
+        fi
+    done
+
+    if [ "$SUCCESS" == false ]; then
+        echo -e "${RED}Failed to fetch input after $MAX_RETRIES attempts${NC}"
+        echo "Creating empty input file instead..."
+        touch "$INPUT_FILE"
     fi
 else
     # Create empty input file if it doesn't exist
@@ -102,11 +146,11 @@ else
     fi
 fi
 
-# Create empty test input file if it doesn't exist
+# Always create empty test input file (must be filled manually)
 if [ ! -f "$TEST_INPUT_FILE" ]; then
     touch "$TEST_INPUT_FILE"
     echo -e "${GREEN}✓ Created empty $TEST_INPUT_FILE${NC}"
-    echo -e "${YELLOW}  Remember to paste your test input!${NC}"
+    echo -e "${YELLOW}  Add test input from puzzle examples manually${NC}"
 else
     echo -e "${YELLOW}Test input file $TEST_INPUT_FILE already exists${NC}"
 fi
@@ -117,11 +161,12 @@ echo -e "${GREEN}Setup complete! 🎄${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 echo "Next steps:"
-echo "1. Add test input to: $TEST_INPUT_FILE"
+echo "1. Add test input from puzzle examples to: $TEST_INPUT_FILE"
 if [ "$FETCH_INPUT" == false ]; then
     echo "2. Add puzzle input to: $INPUT_FILE"
     echo "   Or run: ./setup-day.sh $YEAR $DAY --fetch"
 fi
 echo "3. Edit solution in: $SRC_FILE"
-echo "4. Run with: mvn exec:java -Dexec.mainClass=\"year$YEAR.Day$DAY.Main\""
+echo "4. Run tests: mvn test -Dtest=year$YEAR.Day$DAY.MainTest"
+echo "5. Run solution: mvn exec:java -Dexec.mainClass=\"year$YEAR.Day$DAY.Main\""
 echo ""
