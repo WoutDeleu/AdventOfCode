@@ -1,224 +1,221 @@
 package year2024.Day6;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 
 public class Main {
-  public static void main(String[] args) throws FileNotFoundException {
-    var input = new Main().read("./src/main/java/year2024/Day6/input");
-    var copyInput = copyMatrix(input);
-    int score = new Main().solve_pt1(input);
-    System.out.println("pt1: " + score);
+    public static void main(String[] args) throws IOException {
+        var input = readInput("./src/main/java/year2024/Day6/input");
 
-    input = copyMatrix(copyInput);
-    int score2 = new Main().solve_pt2(input);
-    System.out.println("pt2: " + score2);
-  }
+        var part1 = solvePart1(input);
+        System.out.println("Part 1: " + part1);
 
-  private int countX(char[][] input) {
-    int count = 0;
-    for (char[] row : input) {
-      for (char c : row) {
-        if (c == 'X') {
-          count++;
+        var part2 = solvePart2(input);
+        System.out.println("Part 2: " + part2);
+    }
+
+    static Object solvePart1(List<String> lines) {
+        char[][] grid = parseInput(lines);
+        int[] cors = findStartingCords(grid);
+        int i = cors[0];
+        int j = cors[1];
+
+        int previousI = i;
+        int previousJ = j;
+        do {
+            i += getDirection(grid[previousI][previousJ])[0];
+            j += getDirection(grid[previousI][previousJ])[1];
+            if(i >= 0 && i < grid.length && j >= 0 && j < grid[i].length) {
+                if (grid[i][j] == 'X' || grid[i][j] == '.') {
+                    grid[i][j] = grid[previousI][previousJ];
+                    grid[previousI][previousJ] = 'X';
+                    previousI = i;
+                    previousJ = j;
+                } else {
+                    grid[previousI][previousJ] = rotateInput(grid[previousI][previousJ]);
+                    i = previousI;
+                    j = previousJ;
+                }
+            }
+        } while (i >= 0 && i < grid.length && j >= 0 && j < grid[i].length);
+        grid[previousI][previousJ] = 'X';
+        return countX(grid);
+    }
+
+    static Object solvePart2(List<String> lines) {
+        char[][] grid = parseInput(lines);
+        var copyInput = copyMatrix(grid);
+        int[] cors = findStartingCords(grid);
+
+        // Get original path
+        solvePart1Helper(grid);
+        List<int[]> originalPath = getAllXsesPath(grid);
+
+        int count = 0;
+        for (int[] entry : originalPath) {
+            int q = entry[0];
+            int w = entry[1];
+
+            int i = cors[0];
+            int j = cors[1];
+            int previousI = i;
+            int previousJ = j;
+            grid = copyMatrix(copyInput);
+            if (grid[q][w] == '#' || grid[q][w] == '^' || grid[q][w] == 'v' || grid[q][w] == '<' || grid[q][w] == '>') {
+                continue;
+            }
+            else {
+                grid[q][w] = '#';
+            }
+            List<int[]> path = new ArrayList<>();
+            List<Character> directions = new ArrayList<>();
+            int steps = 0;
+            do {
+                i += getDirection(grid[previousI][previousJ])[0];
+                j += getDirection(grid[previousI][previousJ])[1];
+                if(i >= 0 && i < grid.length && j >= 0 && j < grid[i].length) {
+                    if (grid[i][j] == 'X' || grid[i][j] == '.') {
+                        grid[i][j] = grid[previousI][previousJ];
+                        path.add(new int[]{previousI, previousJ});
+                        directions.add(grid[previousI][previousJ]);
+                        grid[previousI][previousJ] = 'X';
+                        previousI = i;
+                        previousJ = j;
+                    } else {
+                        grid[previousI][previousJ] = rotateInput(grid[previousI][previousJ]);
+                        i = previousI;
+                        j = previousJ;
+                    }
+                }
+                steps++;
+                if (steps > 10000) {
+                    count++;
+                    break;
+                }
+            } while (i >= 0 && i < grid.length && j >= 0 && j < grid[i].length);
+            grid[previousI][previousJ] = 'X';
+            grid[q][w] = '#';
         }
-      }
+        return count;
     }
-    return count;
-  }
 
-  private int[] findStartingCords(char[][] input) {
-    int[] cords = new int[2];
-    for (int i = 0; i < input.length; i++) {
-      for (int j = 0; j < input[i].length; j++) {
-        if (input[i][j] == '^' || input[i][j] == 'v' || input[i][j] == '<' || input[i][j] == '>') {
-          cords[0] = i;
-          cords[1] = j;
-          return cords;
+    private static void solvePart1Helper(char[][] grid) {
+        int[] cors = findStartingCords(grid);
+        int i = cors[0];
+        int j = cors[1];
+
+        int previousI = i;
+        int previousJ = j;
+        do {
+            i += getDirection(grid[previousI][previousJ])[0];
+            j += getDirection(grid[previousI][previousJ])[1];
+            if(i >= 0 && i < grid.length && j >= 0 && j < grid[i].length) {
+                if (grid[i][j] == 'X' || grid[i][j] == '.') {
+                    grid[i][j] = grid[previousI][previousJ];
+                    grid[previousI][previousJ] = 'X';
+                    previousI = i;
+                    previousJ = j;
+                } else {
+                    grid[previousI][previousJ] = rotateInput(grid[previousI][previousJ]);
+                    i = previousI;
+                    j = previousJ;
+                }
+            }
+        } while (i >= 0 && i < grid.length && j >= 0 && j < grid[i].length);
+        grid[previousI][previousJ] = 'X';
+    }
+
+    private static char[][] parseInput(List<String> lines) {
+        char[][] grid = new char[lines.size()][];
+        for (int i = 0; i < lines.size(); i++) {
+            grid[i] = lines.get(i).toCharArray();
         }
-      }
+        return grid;
     }
-    return cords;
-  }
 
-  private int[] getDirection(char c) {
-    int[] direction = new int[2];
-    return switch (c) {
-      case '^' -> {
-        direction[0] = -1;
-        yield direction;
-      }
-      case 'v' -> {
-        direction[0] = 1;
-        yield direction;
-      }
-      case '<' -> {
-        direction[1] = -1;
-        yield direction;
-      }
-      case '>' -> {
-        direction[1] = 1;
-        yield direction;
-      }
-      default -> direction;
-    };
-  }
-
-  public int solve_pt1(char[][] input) {
-    int[] cors = findStartingCords(input);
-    int i = cors[0];
-    int j = cors[1];
-
-    int previousI = i;
-    int previousJ = j;
-    do {
-      i += getDirection(input[previousI][previousJ])[0];
-      j += getDirection(input[previousI][previousJ])[1];
-      if(i >= 0 && i < input.length && j >= 0 && j < input[i].length) {
-        if (input[i][j] == 'X' || input[i][j] == '.') {
-          input[i][j] = input[previousI][previousJ];
-          input[previousI][previousJ] = 'X';
-          previousI = i;
-          previousJ = j;
-        } else {
-          input[previousI][previousJ] = rotateInput(input[previousI][previousJ]);
-          i = previousI;
-          j = previousJ;
+    private static int countX(char[][] input) {
+        int count = 0;
+        for (char[] row : input) {
+            for (char c : row) {
+                if (c == 'X') {
+                    count++;
+                }
+            }
         }
-      }
-    } while (i >= 0 && i < input.length && j >= 0 && j < input[i].length);
-    input[previousI][previousJ] = 'X';
-    return countX(input);
-  }
+        return count;
+    }
 
-  private char rotateInput(char c) {
-    return switch (c) {
-      case '^' -> '>';
-      case '>' -> 'v';
-      case 'v' -> '<';
-      case '<' -> '^';
-      default -> c;
-    };
-  }
-
-  public int solve_pt2(char[][] input) {
-    var copyInput = copyMatrix(input);
-    int[] cors = findStartingCords(input);
-
-    solve_pt1(input);
-    List<int[]> originalPath = getAllXsesPath(input);
-
-    int count = 0;
-    for (int[] entry : originalPath) {
-      int q = entry[0];
-      int w = entry[1];
-
-      int i = cors[0];
-      int j = cors[1];
-      int previousI = i;
-      int previousJ = j;
-      input = copyMatrix(copyInput);
-      if (input[q][w] == '#' || input[q][w] == '^' || input[q][w] == 'v' || input[q][w] == '<' || input[q][w] == '>') {
-        continue;
-      }
-      else {
-        input[q][w] = '#';
-      }
-      List<int[]> path = new ArrayList<>();
-      List<Character> directions = new ArrayList<>();
-      int steps = 0;
-      do {
-        i += getDirection(input[previousI][previousJ])[0];
-        j += getDirection(input[previousI][previousJ])[1];
-        if(i >= 0 && i < input.length && j >= 0 && j < input[i].length) {
-          if (input[i][j] == 'X' || input[i][j] == '.') {
-            input[i][j] = input[previousI][previousJ];
-            path.add(new int[]{previousI, previousJ});
-            directions.add(input[previousI][previousJ]);
-            input[previousI][previousJ] = 'X';
-            previousI = i;
-            previousJ = j;
-          } else {
-            input[previousI][previousJ] = rotateInput(input[previousI][previousJ]);
-            i = previousI;
-            j = previousJ;
-          }
+    private static int[] findStartingCords(char[][] input) {
+        int[] cords = new int[2];
+        for (int i = 0; i < input.length; i++) {
+            for (int j = 0; j < input[i].length; j++) {
+                if (input[i][j] == '^' || input[i][j] == 'v' || input[i][j] == '<' || input[i][j] == '>') {
+                    cords[0] = i;
+                    cords[1] = j;
+                    return cords;
+                }
+            }
         }
-        steps++;
-        // todo - fix
-        // if (containsLoop(path, directions)) {
-        if (steps > 10000) {
-          count++;
-          break;
+        return cords;
+    }
+
+    private static int[] getDirection(char c) {
+        int[] direction = new int[2];
+        return switch (c) {
+            case '^' -> {
+                direction[0] = -1;
+                yield direction;
+            }
+            case 'v' -> {
+                direction[0] = 1;
+                yield direction;
+            }
+            case '<' -> {
+                direction[1] = -1;
+                yield direction;
+            }
+            case '>' -> {
+                direction[1] = 1;
+                yield direction;
+            }
+            default -> direction;
+        };
+    }
+
+    private static char rotateInput(char c) {
+        return switch (c) {
+            case '^' -> '>';
+            case '>' -> 'v';
+            case 'v' -> '<';
+            case '<' -> '^';
+            default -> c;
+        };
+    }
+
+    private static List<int[]> getAllXsesPath(char[][] input) {
+        List<int[]> result = new ArrayList<>();
+        for(int i = 0; i<input.length; i++) {
+            for(int j = 0; j<input[i].length; j++) {
+                if(input[i][j] == 'X') result.add(new int[]{i, j});
+            }
         }
-      } while (i >= 0 && i < input.length && j >= 0 && j < input[i].length);
-      input[previousI][previousJ] = 'X';
-      input[q][w] = '#';
+        return result;
     }
-    return count;
-  }
 
-  private List<int[]> getAllXsesPath(char[][] input) {
-    List<int[]> result = new ArrayList<>();
-    for(int i = 0; i<input.length; i++) {
-      for(int j = 0; j<input[i].length; j++) {
-        if(input[i][j] == 'X') result.add(new int[]{i, j});
-      }
-    }
-    return result;
-  }
-
-  private boolean containsLoop(List<int[]> path, List<Character> directions) {
-    for(int i = 0; i < path.size(); i++) {
-      for(int j = i+1; j < path.size(); j++) {
-        if (path.get(i)[0] == path.get(j)[0] && path.get(i)[1] == path.get(j)[1] && directions.get(i) == directions.get(j)) {
-          return true;
+    private static char[][] copyMatrix(char[][] input) {
+        var copyInput = new char[input.length][input[0].length];
+        for(int i = 0; i< input.length; i++) {
+            for (int j = 0; j< input[0].length; j++) {
+                copyInput[i][j] = input[i][j];
+            }
         }
-      }
+        return copyInput;
     }
-    return false;
-  }
 
-  private static char[][] copyMatrix(char[][] input) {
-    var copyInput = new char[input.length][input[0].length];
-    for(int i = 0; i< input.length; i++) {
-      for (int j = 0; j< input[0].length; j++) {
-        copyInput[i][j] = input[i][j];
-      }
+    static List<String> readInput(String path) throws IOException {
+        return Files.readAllLines(Path.of(path));
     }
-    return copyInput;
-  }
-
-  public char[][] read(String s) throws FileNotFoundException {
-    // get dimensions
-    var sc = new Scanner(new File(s));
-    int rows = 0;
-    while(sc.hasNextLine()) {
-      sc.nextLine();
-      rows++;
-    }
-    sc.close();
-    sc = new Scanner(new File(s));
-    int cols = sc.nextLine().length();
-
-    // read input
-    sc = new Scanner(new File(s));
-    char[][] grid = new char[rows][cols];
-    int i = 0, j;
-    while(sc.hasNextLine()) {
-      j = 0;
-      var arr = sc.nextLine().toCharArray();
-      for (char c : arr) {
-        grid[i][j] = c;
-        j++;
-      }
-      i++;
-    }
-    return grid;
-  }
 }

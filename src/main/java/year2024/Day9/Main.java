@@ -1,107 +1,114 @@
 package year2024.Day9;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 import static year2024.Day9.Utils.printLayout;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
 public class Main {
-  public static void main(String[] args) throws FileNotFoundException {
-    var input = new Main().read("./src/main/java/year2024/Day9/input");
-    var score = new Main().solve_pt1(input);
-    System.out.println("pt1: " + score);
+    public static void main(String[] args) throws IOException {
+        var input = readInput("./src/main/java/year2024/Day9/input");
 
-    int score2 = new Main().solve_pt2(input);
-    System.out.println("pt2: " + score2);
-  }
+        var part1 = solvePart1(input);
+        System.out.println("Part 1: " + part1);
 
-  public long solve_pt1(int[] input) {
-    char[] spaceLayout = createSpaceLayout(input);
-    int[] compactedLayout = compactSpaceLayout(spaceLayout);
-    printLayout(compactedLayout);
-    return checksum(compactedLayout);
-  }
+        var part2 = solvePart2(input);
+        System.out.println("Part 2: " + part2);
+    }
 
-  public int solve_pt2(int[] input) {
-    return 0;
-  }
+    static Object solvePart1(List<String> lines) {
+        int[] diskMap = parseInput(lines);
+        char[] spaceLayout = createSpaceLayout(diskMap);
+        int[] compactedLayout = compactSpaceLayout(spaceLayout);
+        printLayout(compactedLayout);
+        return checksum(compactedLayout);
+    }
 
-  private int[] compactSpaceLayout(char[] spaceLayout) {
-    int index = 0, reverseIndex = spaceLayout.length - 1;
-    StringBuilder compactedLayout = new StringBuilder();
+    static Object solvePart2(List<String> lines) {
+        return 0;
+    }
 
-    while (index <= reverseIndex) {
-      if (Character.isDigit(spaceLayout[index])) {
-        compactedLayout.append(spaceLayout[index]);
-        index++;
-      } else {
-        if (Character.isDigit(spaceLayout[reverseIndex])) {
-          compactedLayout.append(spaceLayout[reverseIndex]);
-          index++;
+    private static int[] parseInput(List<String> lines) {
+        String line = lines.get(0);
+        return line.chars().map(c -> charToInt((char) c)).toArray();
+    }
+
+    private static int[] compactSpaceLayout(char[] spaceLayout) {
+        int index = 0, reverseIndex = spaceLayout.length - 1;
+        StringBuilder compactedLayout = new StringBuilder();
+
+        while (index <= reverseIndex) {
+            if (Character.isDigit(spaceLayout[index])) {
+                compactedLayout.append(spaceLayout[index]);
+                index++;
+            } else {
+                if (Character.isDigit(spaceLayout[reverseIndex])) {
+                    compactedLayout.append(spaceLayout[reverseIndex]);
+                    index++;
+                }
+                reverseIndex--;
+            }
         }
-        reverseIndex--;
-      }
+
+        return getInts(compactedLayout);
     }
 
-    return getInts(compactedLayout);
-  }
-
-  private int[] getInts(StringBuilder compactedLayout) {
-    return compactedLayout.toString().chars().map(c -> charToInt((char) c)).toArray();
-  }
-
-  private long checksum(int[] layout) {
-    long checkSum = 0;
-    for (int i = 0; i < layout.length; i++) {
-      checkSum += (long) layout[i] * i;
-    }
-    return checkSum;
-  }
-
-  private int charToInt(char c) {
-    return c - '0';
-  }
-
-  private char[] createSpaceLayout(int[] input) {
-    StringBuilder spaceLayout = new StringBuilder();
-
-    boolean isFile = true, isFreeSpace = false;
-    int index = 0;
-    for (int i : input) {
-      if (isFile) {
-        spaceLayout.append(Integer.toString(index).repeat(i));
-        index++;
-      }
-      if (isFreeSpace) {
-        spaceLayout.append(".".repeat(i));
-      }
-
-      isFile = !isFile;
-      isFreeSpace = !isFreeSpace;
+    private static int[] getInts(StringBuilder compactedLayout) {
+        return compactedLayout.toString().chars().map(c -> charToInt((char) c)).toArray();
     }
 
-    return spaceLayout.toString().toCharArray();
-  }
+    private static long checksum(int[] layout) {
+        long checkSum = 0;
+        for (int i = 0; i < layout.length; i++) {
+            checkSum += (long) layout[i] * i;
+        }
+        return checkSum;
+    }
 
-  public int[] read(String s) throws FileNotFoundException {
-    var sc = new Scanner(new File(s));
-    return sc.nextLine().chars().map(c -> charToInt((char) c)).toArray();
-  }
+    private static int charToInt(char c) {
+        return c - '0';
+    }
+
+    private static char[] createSpaceLayout(int[] input) {
+        StringBuilder spaceLayout = new StringBuilder();
+
+        boolean isFile = true, isFreeSpace = false;
+        int index = 0;
+        for (int i : input) {
+            if (isFile) {
+                spaceLayout.append(Integer.toString(index).repeat(i));
+                index++;
+            }
+            if (isFreeSpace) {
+                spaceLayout.append(".".repeat(i));
+            }
+
+            isFile = !isFile;
+            isFreeSpace = !isFreeSpace;
+        }
+
+        return spaceLayout.toString().toCharArray();
+    }
+
+    static List<String> readInput(String path) throws IOException {
+        return Files.readAllLines(Path.of(path));
+    }
 }
 
 class Utils {
-  public static void printLayout(char[] layout) {
-    for (char c : layout) {
-      System.out.print(c);
+    public static void printLayout(char[] layout) {
+        for (char c : layout) {
+            System.out.print(c);
+        }
+        System.out.println();
     }
-    System.out.println();
-  }
 
-  public static void printLayout(int[] layout) {
-    for (int c : layout) {
-      System.out.print(c);
+    public static void printLayout(int[] layout) {
+        for (int c : layout) {
+            System.out.print(c);
+        }
+        System.out.println();
     }
-    System.out.println();
-  }
 }

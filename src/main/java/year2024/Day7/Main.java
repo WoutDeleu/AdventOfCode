@@ -1,125 +1,129 @@
 package year2024.Day7;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Scanner;
 
 public class Main {
-  public static void main(String[] args) throws FileNotFoundException {
-    var input = new Main().read("./src/main/java/year2024/Day7/input");
-    long score = new Main().solve_pt1(input);
-    System.out.println("pt1: " + score);
+    public static void main(String[] args) throws IOException {
+        var input = readInput("./src/main/java/year2024/Day7/input");
 
-    long score2 = new Main().solve_pt2(input);
-    System.out.println("pt2: " + score2);
-  }
+        var part1 = solvePart1(input);
+        System.out.println("Part 1: " + part1);
 
-  private static boolean isFirstCall(long tempSum) {
-    return tempSum == 0;
-  }
-
-  public long solve_pt1(List<Equation> equations) {
-    long result = 0;
-    for (Equation equation : equations) {
-      long desiredSum = equation.sum();
-      var args = equation.args();
-      long tempSum = 0;
-
-      if (isPossible(desiredSum, args, tempSum, false)) {
-        result += equation.sum();
-      }
-    }
-    return result;
-  }
-
-  private boolean isPossible(long desiredSum, Queue<Long> args, long tempSum, boolean pt2) {
-    // deep copy of args to avoid modifying the original queue
-    var currentQueue = new LinkedList<>(args);
-
-    // stop condition for recursion
-    if (currentQueue.isEmpty()) {
-      return tempSum == desiredSum;
+        var part2 = solvePart2(input);
+        System.out.println("Part 2: " + part2);
     }
 
-    // pruning condition
-    if (tempSum > desiredSum) {
-      return false;
+    static Object solvePart1(List<String> lines) {
+        List<Equation> equations = parseInput(lines);
+        long result = 0;
+        for (Equation equation : equations) {
+            long desiredSum = equation.sum();
+            var args = equation.args();
+            long tempSum = 0;
+
+            if (isPossible(desiredSum, args, tempSum, false)) {
+                result += equation.sum();
+            }
+        }
+        return result;
     }
 
-    long nextArg = currentQueue.poll();
+    static Object solvePart2(List<String> lines) {
+        List<Equation> equations = parseInput(lines);
+        long result = 0;
+        for (Equation equation : equations) {
+            long desiredSum = equation.sum();
+            var args = equation.args();
+            long tempSum = 0;
 
-    ///  ADDITION
-    tempSum += nextArg;
-    if (isPossible(desiredSum, currentQueue, tempSum, pt2)) {
-      return true;
-    }
-    // recursion
-    tempSum -= nextArg;
-
-    // first element -> no need to try multiplication
-    if (isFirstCall(tempSum)) {
-      return false;
-    }
-
-    /// MULTIPLICATION
-    tempSum *= nextArg;
-    if (isPossible(desiredSum, currentQueue, tempSum, pt2)) {
-      return true;
-    }
-    tempSum /= nextArg;
-
-    // check if concatenation is allowed
-    if (!pt2) {
-      return false;
+            if (isPossible(desiredSum, args, tempSum, true)) {
+                result += equation.sum();
+            }
+        }
+        return result;
     }
 
-    ///  CONCATENATION
-    tempSum = concatenate(tempSum, nextArg);
-    return isPossible(desiredSum, currentQueue, tempSum, pt2);
-  }
-
-  private long concatenate(long tempSum, long nextArg) {
-    String tempSumStr = String.valueOf(tempSum);
-    String nextArgStr = String.valueOf(nextArg);
-    return Long.parseLong(tempSumStr + nextArgStr);
-  }
-
-  public long solve_pt2(List<Equation> equations) {
-    long result = 0;
-    for (Equation equation : equations) {
-      long desiredSum = equation.sum();
-      var args = equation.args();
-      long tempSum = 0;
-
-      if (isPossible(desiredSum, args, tempSum, true)) {
-        result += equation.sum();
-      }
-    }
-    return result;
-  }
-
-  public List<Equation> read(String s) throws FileNotFoundException {
-    List<Equation> result = new ArrayList<>();
-    var sc = new Scanner(new File(s));
-    while (sc.hasNextLine()) {
-      String line = sc.nextLine();
-      String[] parts = line.split(":");
-      Long sum = Long.parseLong(parts[0]);
-      var args =
-          Arrays.stream(parts[1].split(" "))
-              .filter(string -> !string.isBlank())
-              .map(Long::parseLong)
-              .toList();
-      result.add(new Equation(sum, new LinkedList<>(args)));
+    private static List<Equation> parseInput(List<String> lines) {
+        List<Equation> result = new ArrayList<>();
+        for (String line : lines) {
+            String[] parts = line.split(":");
+            Long sum = Long.parseLong(parts[0]);
+            var args =
+                Arrays.stream(parts[1].split(" "))
+                    .filter(string -> !string.isBlank())
+                    .map(Long::parseLong)
+                    .toList();
+            result.add(new Equation(sum, new LinkedList<>(args)));
+        }
+        return result;
     }
 
-    return result;
-  }
+    private static boolean isFirstCall(long tempSum) {
+        return tempSum == 0;
+    }
 
-  public record Equation(Long sum, Queue<Long> args) {}
+    private static boolean isPossible(long desiredSum, Queue<Long> args, long tempSum, boolean pt2) {
+        // deep copy of args to avoid modifying the original queue
+        var currentQueue = new LinkedList<>(args);
+
+        // stop condition for recursion
+        if (currentQueue.isEmpty()) {
+            return tempSum == desiredSum;
+        }
+
+        // pruning condition
+        if (tempSum > desiredSum) {
+            return false;
+        }
+
+        long nextArg = currentQueue.poll();
+
+        ///  ADDITION
+        tempSum += nextArg;
+        if (isPossible(desiredSum, currentQueue, tempSum, pt2)) {
+            return true;
+        }
+        // recursion
+        tempSum -= nextArg;
+
+        // first element -> no need to try multiplication
+        if (isFirstCall(tempSum)) {
+            return false;
+        }
+
+        /// MULTIPLICATION
+        tempSum *= nextArg;
+        if (isPossible(desiredSum, currentQueue, tempSum, pt2)) {
+            return true;
+        }
+        tempSum /= nextArg;
+
+        // check if concatenation is allowed
+        if (!pt2) {
+            return false;
+        }
+
+        ///  CONCATENATION
+        tempSum = concatenate(tempSum, nextArg);
+        return isPossible(desiredSum, currentQueue, tempSum, pt2);
+    }
+
+    private static long concatenate(long tempSum, long nextArg) {
+        String tempSumStr = String.valueOf(tempSum);
+        String nextArgStr = String.valueOf(nextArg);
+        return Long.parseLong(tempSumStr + nextArgStr);
+    }
+
+    static List<String> readInput(String path) throws IOException {
+        return Files.readAllLines(Path.of(path));
+    }
+
+    public record Equation(Long sum, Queue<Long> args) {}
 }

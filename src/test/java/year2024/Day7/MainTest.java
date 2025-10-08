@@ -1,27 +1,26 @@
-  package year2024.Day7;
+package year2024.Day7;
 
-  import org.junit.Test;
+import org.junit.Test;
+import java.io.IOException;
 
-  import java.io.FileNotFoundException;
+import static org.junit.Assert.*;
 
-
-  public class MainTest {
+public class MainTest {
     @Test
-    public void part1() throws FileNotFoundException {
-      var main = new Main();
-      var input = main.read("./src/test/java/year2024/Day7/input");
-      var solution = main.solve_pt1(input);
-      System.out.println("Solution: " + solution);
-      assert solution == 3749;
+    public void testPart1() throws IOException {
+        var input = Main.readInput("./src/test/java/year2024/Day7/input");
+        var result = Main.solvePart1(input);
+
+        System.out.println("Part 1 result: " + result);
+        assertEquals(3749L, result);
     }
 
     @Test
-    public void part2() throws FileNotFoundException {
-      var main = new Main();
-      var input = main.read("./src/test/java/year2024/Day7/input");
-      var solution = main.solve_pt2(input);
-      System.out.println("Solution: " + solution);
-      assert solution == 11387;
-    }
-  }
+    public void testPart2() throws IOException {
+        var input = Main.readInput("./src/test/java/year2024/Day7/input");
+        var result = Main.solvePart2(input);
 
+        System.out.println("Part 2 result: " + result);
+        assertEquals(11387L, result);
+    }
+}

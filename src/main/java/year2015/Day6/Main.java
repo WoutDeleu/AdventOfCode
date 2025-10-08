@@ -1,4 +1,4 @@
-package year2015.Day1;
+package year2015.Day6;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2015/Day1/input");
+        var input = readInput("./src/main/java/year2015/Day6/input");
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -17,26 +17,13 @@ public class Main {
     }
 
     static Object solvePart1(List<String> lines) {
-        String input = String.join("", lines);
-        int floor = 0;
-        for (char c : input.toCharArray()) {
-            if (c == '(') floor++;
-            else floor--;
-        }
-        return floor;
+        // TODO: Implement solution for part 1
+        return null;
     }
 
     static Object solvePart2(List<String> lines) {
-        String input = String.join("", lines);
-        int floor = 0;
-        int count = 0;
-        for (char c : input.toCharArray()) {
-            count++;
-            if (c == '(') floor++;
-            else floor--;
-            if (floor < 0) break;
-        }
-        return count;
+        // TODO: Implement solution for part 2
+        return null;
     }
 
     static List<String> readInput(String path) throws IOException {
