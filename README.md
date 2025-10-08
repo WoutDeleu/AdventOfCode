@@ -24,6 +24,39 @@ My solutions for [Advent of Code](https://adventofcode.com/) puzzles, written in
 ### Prerequisites
 - Java 20+
 - Maven
+- AOC session cookie (optional, for auto-fetching inputs)
+
+### Setting Up a New Day
+
+**Option 1: Auto-fetch from Advent of Code (Recommended)**
+```bash
+# Set your session cookie (one-time setup)
+export AOC_SESSION='your_session_cookie_here'
+
+# Fetch input and create files
+java FetchInput.java 2024 13
+```
+
+**Option 2: Manual setup**
+```bash
+# Create directories
+mkdir -p src/main/java/year2024/Day13
+mkdir -p src/test/java/year2024/Day13
+
+# Create files and paste input manually
+touch src/main/java/year2024/Day13/{Main.java,input}
+touch src/test/java/year2024/Day13/{MainTest.java,input}
+```
+
+### Getting Your Session Cookie
+1. Log in to [adventofcode.com](https://adventofcode.com)
+2. Open browser DevTools (F12)
+3. Go to Application/Storage → Cookies → `https://adventofcode.com`
+4. Copy the value of the `session` cookie
+5. Add to your shell profile (~/.zshrc or ~/.bashrc):
+   ```bash
+   export AOC_SESSION='your_cookie_value'
+   ```
 
 ### Running a Solution
 ```bash
@@ -36,7 +69,7 @@ java year2024.Day1.Main
 mvn compile exec:java -Dexec.mainClass="year2024.Day1.Main"
 
 # Run tests
-mvn test
+mvn test -Dtest=Day1Test
 ```
 
 ---
@@ -45,32 +78,37 @@ mvn test
 
 ```
 AdventOfCode/
+├── FetchInput.java        # Utility to auto-fetch inputs from AOC
 ├── src/main/java/
+│   ├── year2016/          # 2016 solutions
 │   ├── year2023/          # 2023 solutions
 │   ├── year2024/          # 2024 solutions
 │   │   ├── Day1/
-│   │   │   ├── Main.java
-│   │   │   └── input
+│   │   │   ├── Main.java     # Solution code
+│   │   │   └── input         # Your puzzle input
 │   │   ├── Day2/
 │   │   └── ...
-│   └── FileGenerator.java
+│   └── aoc/               # Utility classes (newer structure)
+│       ├── Solution.java
+│       └── utils/
 ├── src/test/java/
 │   └── year2024/          # Unit tests
 │       ├── Day1/
-│       │   ├── MainTest.java
-│       │   └── input      # Test input
+│       │   ├── MainTest.java # JUnit tests
+│       │   └── input         # Example/test input
 │       └── ...
-├── Challenges/            # Problem descriptions
+├── Challenges/            # Problem descriptions (markdown)
 │   ├── 2023/
 │   └── 2024/
-├── pom.xml
+├── pom.xml               # Maven configuration
 └── README.md
 ```
 
-Each day follows a consistent structure:
+**Each day follows a consistent structure:**
 - **Main.java**: Contains `solve_pt1()` and `solve_pt2()` methods
-- **input**: Your actual puzzle input
-- **MainTest.java**: Unit tests with example inputs
+- **input**: Your actual puzzle input (fetched from AOC)
+- **MainTest.java**: JUnit tests using example inputs
+- **test/input**: Example input from puzzle description
 
 ---
 
@@ -115,18 +153,58 @@ public class Main {
 
 ---
 
-## 🛠️ Development Tips
+## 🛠️ Complete Workflow
 
-### Testing Your Solution
-1. Add example input to `src/test/java/year2024/DayX/input`
-2. Run the test: `mvn test -Dtest=DayXTest`
-3. Once tests pass, run with actual input
+Here's the recommended workflow when a new Advent of Code puzzle is released:
 
-### Common Patterns
-- **Grid problems**: Use 2D arrays or custom Coordinate classes
+1. **Fetch the puzzle input** (6:00 AM EST when puzzle unlocks)
+   ```bash
+   java FetchInput.java 2024 13
+   ```
+   This automatically:
+   - Creates `src/main/java/year2024/Day13/` and `src/test/java/year2024/Day13/`
+   - Downloads your puzzle input from adventofcode.com
+   - Generates `Main.java` and `MainTest.java` from templates
+   - Creates empty test input file
+
+2. **Add test input**
+   - Copy example input from puzzle description
+   - Paste into `src/test/java/year2024/Day13/input`
+
+3. **Implement solution**
+   - Edit `src/main/java/year2024/Day13/Main.java`
+   - Implement `read()` method to parse your input
+   - Implement `solve_pt1()` with your solution logic
+
+4. **Test with example**
+   ```bash
+   mvn test -Dtest=Day13Test
+   ```
+
+5. **Run with real input**
+   ```bash
+   cd src/main/java
+   java year2024.Day13.Main
+   ```
+
+6. **Submit answer and implement Part 2**
+   - Implement `solve_pt2()` method
+   - Update test expectations
+   - Test and run again
+
+### Development Tips
+
+**Common Patterns**
+- **Grid problems**: Use 2D arrays or custom Coordinate classes (see Day10, Day12)
 - **Path finding**: BFS/DFS with visited sets
 - **Parsing**: Scanner for input, split/regex for parsing
 - **Performance**: Use HashMaps and HashSets for O(1) lookups
+
+**Testing Strategy**
+1. Always start with example input from puzzle description
+2. Add `System.out.println()` to debug intermediate steps
+3. Test edge cases separately
+4. Only run with real input once tests pass
 
 ---
 
