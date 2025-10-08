@@ -9,8 +9,7 @@ Located in `src/main/java/aoc/utils/`:
 - **Coordinate** - 2D coordinate with direction support
 - **MathUtils** - Mathematical functions
 - **ParsingUtils** - Input parsing helpers
-- **InputReader** - Resource-based input loading (existing)
-- **AOCClient** - Auto-fetch inputs (existing)
+- **InputReader** - Resource-based input loading
 
 ## 🎯 Quick Start
 

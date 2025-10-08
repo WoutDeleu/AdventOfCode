@@ -25,60 +25,72 @@ export AOC_SESSION='your_session_cookie_here'
 
 After running setup script:
 
-- **Solution**: `src/main/java/aoc/year2024/Day13.java`
-- **Test**: `src/test/java/aoc/year2024/Day13Test.java`
-- **Input**: `src/main/resources/inputs/2024/day13.txt`
-- **Test Input**: `src/main/resources/inputs/2024/day13_test.txt`
+- **Solution**: `src/main/java/year2024/Day13/Main.java`
+- **Test**: `src/test/java/year2024/Day13/MainTest.java`
+- **Input**: `src/main/java/year2024/Day13/input`
+- **Test Input**: `src/test/java/year2024/Day13/input`
 
 ## Run Solution
 
 ```bash
 # From project root
-mvn compile exec:java -Dexec.mainClass="aoc.year2024.Day13"
+mvn exec:java -Dexec.mainClass="year2024.Day13.Main"
 
 # Or just run main() in your IDE
 ```
 
-## Common Code Patterns
+## Run Tests
 
-### Read Input
-```java
-// In your solve methods, input is already a List<String>
-// No need to read manually!
-
-// But if you need custom reading:
-import aoc.utils.InputReader;
-
-List<String> lines = InputReader.readLines(2024, 13);
-char[][] grid = InputReader.readAsGrid(2024, 13);
-String raw = InputReader.readAsString(2024, 13);
+```bash
+mvn test -Dtest=year2024.Day13.MainTest
 ```
 
-### Solution Template
+## Common Code Patterns
+
+### Using Utilities
+
 ```java
-@Override
-public Object solvePart1(List<String> input) {
+import static aoc.utils.GridUtils.*;
+import static aoc.utils.ParsingUtils.*;
+import aoc.utils.Coordinate;
+
+// Parse grid
+char[][] grid = parseGrid(lines);
+
+// Find positions
+List<int[]> positions = findAll(grid, '#');
+
+// Check bounds
+if (inBounds(row, col, grid)) { ... }
+
+// Count characters
+int count = countChar(grid, 'X');
+```
+
+See [UTILITIES_GUIDE.md](UTILITIES_GUIDE.md) for complete examples.
+
+### Solution Template
+
+```java
+static Object solvePart1(List<String> lines) {
+    // Parse input
+    // Solve
+    return answer;
+}
+
+static Object solvePart2(List<String> lines) {
     // Parse input
     // Solve
     return answer;
 }
 ```
 
-### Test with Example Input
-```java
-public static void main(String[] args) {
-    Day13 solution = new Day13();
-    solution.solveTest();  // Uses day13_test.txt
-    // solution.solve();    // Uses day13.txt
-}
-```
-
 ## Workflow
 
 1. `./setup-day.sh 2024 13 --fetch` ← Creates everything
-2. Paste test input from problem into `day13_test.txt`
+2. Paste test input from problem into test `input` file
 3. Code solution
-4. Run and verify with test input
-5. Switch to real input and solve!
+4. Run tests with example data
+5. Run with real input and solve!
 
 Done! 🎄

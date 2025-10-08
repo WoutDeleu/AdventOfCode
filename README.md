@@ -95,8 +95,7 @@ AdventOfCode/
 │   │   │   └── input         # Your puzzle input
 │   │   ├── Day2/
 │   │   └── ...
-│   └── aoc/               # Utility classes (newer structure)
-│       ├── Solution.java
+│   └── aoc/               # Shared utility classes
 │       └── utils/
 ├── src/test/java/
 │   └── year2024/          # Unit tests

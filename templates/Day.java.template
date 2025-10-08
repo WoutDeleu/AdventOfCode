@@ -1,28 +1,32 @@
-package aoc.year{{YEAR}};
+package year{{YEAR}}.Day{{DAY}};
 
-import aoc.Solution;
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
-public class Day{{DAY_PADDED}} extends Solution {
+public class Main {
+    public static void main(String[] args) throws IOException {
+        var input = readInput("./src/main/java/year{{YEAR}}/Day{{DAY}}/input");
 
-    public Day{{DAY_PADDED}}() {
-        super({{YEAR}}, {{DAY}});
+        var part1 = solvePart1(input);
+        System.out.println("Part 1: " + part1);
+
+        var part2 = solvePart2(input);
+        System.out.println("Part 2: " + part2);
     }
 
-    @Override
-    public Object solvePart1(List<String> input) {
+    static Object solvePart1(List<String> lines) {
         // TODO: Implement part 1
         return 0;
     }
 
-    @Override
-    public Object solvePart2(List<String> input) {
+    static Object solvePart2(List<String> lines) {
         // TODO: Implement part 2
         return 0;
     }
 
-    public static void main(String[] args) {
-        new Day{{DAY_PADDED}}().solve();
+    static List<String> readInput(String path) throws IOException {
+        return Files.readAllLines(Path.of(path));
     }
 }

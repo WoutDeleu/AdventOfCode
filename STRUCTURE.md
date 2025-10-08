@@ -1,145 +1,169 @@
 # Project Structure
 
-This repository contains solutions for Advent of Code puzzles in Java, using **two different structures**:
+This repository contains solutions for Advent of Code puzzles in Java.
 
 ## 📂 Directory Layout
 
 ```
 AdventOfCode/
 ├── src/main/java/
-│   ├── aoc/                          # NEW structure (Day 13+)
-│   │   ├── Solution.java             # Base class for all solutions
-│   │   ├── utils/
-│   │   │   ├── InputReader.java      # Resource-based input reading
-│   │   │   └── AOCClient.java        # Auto-fetch inputs from AOC
-│   │   └── year2024/
-│   │       └── Day13.java            # New format solutions
+│   ├── aoc/
+│   │   └── utils/                    # Shared utility classes
+│   │       ├── InputReader.java      # Resource-based input reading
+│   │       ├── GridUtils.java        # Grid/matrix operations
+│   │       ├── Coordinate.java       # 2D coordinate class
+│   │       ├── MathUtils.java        # Mathematical functions
+│   │       └── ParsingUtils.java     # Input parsing helpers
 │   │
-│   ├── year2024/                     # OLD structure (Days 1-12)
+│   ├── year2024/                     # 2024 solutions
 │   │   ├── Day1/
-│   │   │   ├── Main.java             # Old format
-│   │   │   └── input                 # Input in same directory
+│   │   │   ├── Main.java
+│   │   │   └── input
 │   │   ├── Day2/
-│   │   └── ...                       # Days 1-12 use this format
+│   │   │   ├── Main.java
+│   │   │   └── input
+│   │   └── ...
 │   │
-│   ├── year2023/                     # 2023 solutions (old structure)
+│   ├── year2023/                     # 2023 solutions
+│   │   └── Day*/
 │   │
-│   └── year2015/                     # 2015 solutions (old structure)
-│       └── Day1/
-│
-├── src/main/resources/
-│   └── inputs/                       # NEW structure inputs
-│       └── 2024/
-│           ├── day13.txt             # Actual inputs (gitignored)
-│           └── day13_test.txt        # Test inputs (committed)
+│   └── year2015/                     # 2015 solutions
+│       └── Day*/
 │
 ├── src/test/java/
-│   ├── aoc/year2024/                 # NEW structure tests
-│   │   └── Day13Test.java
-│   │
-│   ├── year2024/                     # OLD structure tests
+│   ├── year2024/
 │   │   ├── Day1/MainTest.java
 │   │   └── ...
 │   │
-│   └── year2023/                     # 2023 tests
+│   ├── year2023/
+│   │
+│   └── year2015/
 │
 ├── templates/                        # Templates for new days
-│   ├── Day.java.template
-│   └── DayTest.java.template
+│   ├── Day.java.template             # Main.java template
+│   └── DayTest.java.template         # MainTest.java template
 │
-├── setup-day.sh                      # Setup script for new days
+├── setup-day.sh                      # Automated day setup script
 ├── README.md                         # Main documentation
 ├── QUICKSTART.md                     # Quick reference guide
+├── UTILITIES_GUIDE.md                # Utility classes usage guide
 └── pom.xml                           # Maven configuration
 ```
 
-## 🔄 Structure Evolution
+## 📝 Solution Structure
 
-### Old Structure (Days 1-12, Year 2023)
-- Each day in `yearXXXX/DayX/` folder
-- `Main.java` with custom read methods
-- Input files in same directory as code
-- Manual file creation required
+Each day follows this pattern:
 
-**Example:**
 ```
-src/main/java/year2024/Day1/
-  ├── Main.java
-  └── input
-```
+src/main/java/yearXXXX/DayX/
+  ├── Main.java          # Solution with solvePart1() and solvePart2()
+  ├── input              # Puzzle input (gitignored)
+  └── [other classes]    # Helper classes if needed
 
-### New Structure (Day 13+)
-- Solutions in `aoc.yearXXXX` package
-- Extends `Solution` base class
-- Inputs in `resources/inputs/YYYY/`
-- Auto-generated via `./setup-day.sh`
-
-**Example:**
-```
-src/main/java/aoc/year2024/Day13.java
-src/main/resources/inputs/2024/day13.txt
-src/main/resources/inputs/2024/day13_test.txt
+src/test/java/yearXXXX/DayX/
+  ├── MainTest.java      # Unit tests
+  └── input              # Test input from examples
 ```
 
-## 🎯 Why Two Structures?
+### Main.java Pattern
 
-**Old structure (Days 1-12):** Working solutions from before the refactoring. Keeping them as-is to avoid breaking existing code.
+```java
+package year2024.Day1;
 
-**New structure (Day 13+):** Improved workflow that eliminates 10 minutes of setup per day:
-- Resource-based inputs (cleaner)
-- Base class eliminates boilerplate
-- Auto-generation via script
-- Consistent package structure
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
-## 📝 Adding New Days
+public class Main {
+    public static void main(String[] args) throws IOException {
+        var input = readInput("./src/main/java/year2024/Day1/input");
 
-Always use the new structure:
+        var part1 = solvePart1(input);
+        System.out.println("Part 1: " + part1);
+
+        var part2 = solvePart2(input);
+        System.out.println("Part 2: " + part2);
+    }
+
+    static Object solvePart1(List<String> lines) {
+        // Solution logic
+        return 0;
+    }
+
+    static Object solvePart2(List<String> lines) {
+        // Solution logic
+        return 0;
+    }
+
+    static List<String> readInput(String path) throws IOException {
+        return Files.readAllLines(Path.of(path));
+    }
+}
+```
+
+## 🚀 Adding New Days
+
+Use the automated setup script:
 
 ```bash
 ./setup-day.sh 2024 14
-# or
+```
+
+Or with automatic input fetching:
+
+```bash
 ./setup-day.sh 2024 14 --fetch
 ```
 
 This creates:
-- `src/main/java/aoc/year2024/Day14.java`
-- `src/test/java/aoc/year2024/Day14Test.java`
-- `src/main/resources/inputs/2024/day14.txt`
-- `src/main/resources/inputs/2024/day14_test.txt`
+- `src/main/java/year2024/Day14/Main.java` (from template)
+- `src/test/java/year2024/Day14/MainTest.java` (from template)
+- `src/main/java/year2024/Day14/input` (empty or fetched)
+- `src/test/java/year2024/Day14/input` (empty)
 
-## 🔍 Finding Solutions
-
-### Old structure (2015, 2023, 2024 Days 1-12):
+**Note:** To use `--fetch`, you need to set your AOC session cookie:
 ```bash
-# Run
-mvn exec:java -Dexec.mainClass="year2024.Day1.Main"
-mvn exec:java -Dexec.mainClass="year2015.Day1.Main"
+export AOC_SESSION='your_session_cookie_here'
+```
 
-# Test
+## 🔧 Using Utilities
+
+Import shared utilities to reduce code duplication:
+
+```java
+import static aoc.utils.GridUtils.*;
+import static aoc.utils.ParsingUtils.*;
+import aoc.utils.Coordinate;
+```
+
+See [UTILITIES_GUIDE.md](UTILITIES_GUIDE.md) for detailed usage examples.
+
+## 🔍 Running Solutions
+
+### Run a solution:
+```bash
+mvn exec:java -Dexec.mainClass="year2024.Day1.Main"
+```
+
+### Run tests:
+```bash
 mvn test -Dtest=year2024.Day1.MainTest
 ```
 
-### New structure (Day 13+):
+### Run all tests for a year:
 ```bash
-# Run
-mvn exec:java -Dexec.mainClass="aoc.year2024.Day13"
-
-# Test
-mvn test -Dtest=Day13Test
+mvn test -Dtest="year2024.*"
 ```
 
 ## 📊 Current Progress
 
 ### 2024
-- **Days 1-12**: Completed using old structure
-- **Day 13+**: Use new structure going forward
+- Days 1-12 completed
+- Utilities integrated into Days 8, 10, 12
 
 ### 2023
-- Various days completed using old structure
+- Various days completed
 
 ### 2015
-- **Day 1**: Completed using old structure (refactored from Intro2015)
-
-## 🚀 Migration Note
-
-Old solutions (Days 1-12) remain in their original structure for stability. All new solutions use the improved structure. Both structures are fully supported and functional.
+- Day 1 completed
