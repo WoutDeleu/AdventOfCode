@@ -33,10 +33,12 @@ echo -e "${GREEN}Setting up Advent of Code $YEAR - Day $DAY${NC}"
 # Create directory structure
 SRC_DIR="src/main/java/year$YEAR/Day$DAY"
 TEST_DIR="src/test/java/year$YEAR/Day$DAY"
+CHALLENGE_DIR="Challenges/$YEAR/Day$DAY"
 
 echo -e "${YELLOW}Creating directories...${NC}"
 mkdir -p "$SRC_DIR"
 mkdir -p "$TEST_DIR"
+mkdir -p "$CHALLENGE_DIR"
 
 # Generate source file from template
 SRC_FILE="$SRC_DIR/Main.java"
@@ -65,9 +67,10 @@ fi
 # Handle input files
 INPUT_FILE="$SRC_DIR/input"
 TEST_INPUT_FILE="$TEST_DIR/input"
+README_FILE="$CHALLENGE_DIR/README.md"
 
 if [ "$FETCH_INPUT" == true ]; then
-    echo -e "${YELLOW}Fetching input from Advent of Code...${NC}"
+    echo -e "${YELLOW}Fetching from Advent of Code...${NC}"
 
     # Check if AOC_SESSION is set
     if [ -z "$AOC_SESSION" ]; then
@@ -84,7 +87,7 @@ if [ "$FETCH_INPUT" == true ]; then
     fi
 
     # Fetch input using curl with retries
-    echo -e "${YELLOW}  Fetching puzzle input from: https://adventofcode.com/$YEAR/day/$DAY/input${NC}"
+    echo -e "${YELLOW}  Fetching puzzle input...${NC}"
 
     MAX_RETRIES=3
     RETRY_COUNT=0
@@ -105,39 +108,36 @@ if [ "$FETCH_INPUT" == true ]; then
             "https://adventofcode.com/$YEAR/day/$DAY/input" 2>&1)
 
         if [ "$HTTP_CODE" -eq 200 ]; then
-            # Verify file is not empty and doesn't contain error message
             if [ -s "$INPUT_FILE" ] && ! grep -q "Please log in" "$INPUT_FILE" 2>/dev/null; then
-                echo -e "${GREEN}✓ Puzzle input fetched successfully${NC}"
+                echo -e "${GREEN}✓ Puzzle input fetched${NC}"
                 SUCCESS=true
             else
-                echo -e "${RED}✗ Received invalid response (empty or error page)${NC}"
+                echo -e "${RED}✗ Invalid response${NC}"
                 rm -f "$INPUT_FILE"
                 ((RETRY_COUNT++))
             fi
         elif [ "$HTTP_CODE" -eq 404 ]; then
-            echo -e "${RED}✗ Day $DAY not yet available for year $YEAR (HTTP 404)${NC}"
+            echo -e "${RED}✗ Day $DAY not available yet (HTTP 404)${NC}"
             rm -f "$INPUT_FILE"
             break
         elif [ "$HTTP_CODE" -eq 400 ]; then
             echo -e "${RED}✗ Invalid session cookie (HTTP 400)${NC}"
-            echo "Please check your AOC_SESSION value"
             rm -f "$INPUT_FILE"
             break
         else
-            echo -e "${RED}✗ Failed to fetch input (HTTP $HTTP_CODE)${NC}"
+            echo -e "${RED}✗ Failed (HTTP $HTTP_CODE)${NC}"
             rm -f "$INPUT_FILE"
             ((RETRY_COUNT++))
         fi
     done
 
     if [ "$SUCCESS" == false ]; then
-        echo -e "${RED}Failed to fetch puzzle input after $MAX_RETRIES attempts${NC}"
-        echo "Creating empty input file instead..."
+        echo -e "${RED}Failed to fetch puzzle input${NC}"
         touch "$INPUT_FILE"
     fi
 
-    # Fetch test input from puzzle description
-    echo -e "${YELLOW}  Fetching test input from puzzle description...${NC}"
+    # Fetch puzzle description
+    echo -e "${YELLOW}  Fetching puzzle description...${NC}"
 
     TEMP_HTML=$(mktemp)
     HTTP_CODE=$(curl -s -w "%{http_code}" \
@@ -149,8 +149,40 @@ if [ "$FETCH_INPUT" == true ]; then
         "https://adventofcode.com/$YEAR/day/$DAY" 2>&1)
 
     if [ "$HTTP_CODE" -eq 200 ] && [ -s "$TEMP_HTML" ]; then
-        # Extract first code block from <pre><code>...</code></pre>
-        # Look for the first substantial code block (usually the example input)
+        # Extract the main article content and convert to markdown-ish format
+        {
+            echo "# Advent of Code $YEAR - Day $DAY"
+            echo ""
+            echo "**Source:** https://adventofcode.com/$YEAR/day/$DAY"
+            echo ""
+            echo "---"
+            echo ""
+
+            # Extract article content, clean up HTML, preserve code blocks
+            sed -n '/<article/,/<\/article>/p' "$TEMP_HTML" | \
+                sed -e 's/<article[^>]*>//g' -e 's/<\/article>//g' \
+                    -e 's/<h2[^>]*>/## /g' -e 's/<\/h2>//g' \
+                    -e 's/<p>/\n/g' -e 's/<\/p>/\n/g' \
+                    -e 's/<pre><code>/\n```\n/g' -e 's/<\/code><\/pre>/\n```\n/g' \
+                    -e 's/<code>/`/g' -e 's/<\/code>/`/g' \
+                    -e 's/<em>\*/<strong>*/g' -e 's/\*<\/em>/*<\/strong>/g' \
+                    -e 's/<em>/**/g' -e 's/<\/em>/**/g' \
+                    -e 's/<strong>/**/g' -e 's/<\/strong>/**/g' \
+                    -e 's/<ul>/\n/g' -e 's/<\/ul>/\n/g' \
+                    -e 's/<li>/ - /g' -e 's/<\/li>//g' \
+                    -e 's/<a[^>]*>//g' -e 's/<\/a>//g' \
+                    -e 's/&lt;/</g' -e 's/&gt;/>/g' -e 's/&amp;/\&/g' \
+                    -e 's/&quot;/"/g' -e 's/&#39;/'"'"'/g' \
+                    -e 's/<[^>]*>//g' | \
+                sed '/^[[:space:]]*$/d' | \
+                sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+        } > "$README_FILE"
+
+        echo -e "${GREEN}✓ Puzzle description saved to $README_FILE${NC}"
+
+        # Extract test input from first code block
+        echo -e "${YELLOW}  Extracting test input...${NC}"
+
         TEST_INPUT=$(sed -n '/<pre><code>/,/<\/code><\/pre>/p' "$TEMP_HTML" | \
             head -1 | \
             sed -e 's/<pre><code>//g' -e 's/<\/code><\/pre>//g' \
@@ -160,38 +192,39 @@ if [ "$FETCH_INPUT" == true ]; then
 
         if [ -n "$TEST_INPUT" ] && [ ${#TEST_INPUT} -gt 10 ]; then
             echo "$TEST_INPUT" > "$TEST_INPUT_FILE"
-            echo -e "${GREEN}✓ Test input extracted from puzzle description${NC}"
-            echo -e "${YELLOW}  ⚠ Please verify test input is correct!${NC}"
+            echo -e "${GREEN}✓ Test input extracted${NC}"
+            echo -e "${YELLOW}  ⚠ Verify test input is correct!${NC}"
         else
             touch "$TEST_INPUT_FILE"
-            echo -e "${YELLOW}⚠ Could not extract test input, created empty file${NC}"
-            echo -e "${YELLOW}  Add test input from puzzle examples manually to: $TEST_INPUT_FILE${NC}"
+            echo -e "${YELLOW}⚠ Could not extract test input${NC}"
         fi
     else
         touch "$TEST_INPUT_FILE"
         echo -e "${YELLOW}⚠ Could not fetch puzzle description (HTTP $HTTP_CODE)${NC}"
-        echo -e "${YELLOW}  Add test input manually to: $TEST_INPUT_FILE${NC}"
     fi
 
     rm -f "$TEMP_HTML"
 
 else
-    # Create empty input file if it doesn't exist
+    # Create empty files
     if [ ! -f "$INPUT_FILE" ]; then
         touch "$INPUT_FILE"
         echo -e "${GREEN}✓ Created empty $INPUT_FILE${NC}"
-        echo -e "${YELLOW}  Remember to paste your puzzle input!${NC}"
-    else
-        echo -e "${YELLOW}Input file $INPUT_FILE already exists${NC}"
+        echo -e "${YELLOW}  Paste your puzzle input here${NC}"
     fi
 
-    # Create empty test input file
     if [ ! -f "$TEST_INPUT_FILE" ]; then
         touch "$TEST_INPUT_FILE"
         echo -e "${GREEN}✓ Created empty $TEST_INPUT_FILE${NC}"
-        echo -e "${YELLOW}  Add test input from puzzle examples manually${NC}"
-    else
-        echo -e "${YELLOW}Test input file $TEST_INPUT_FILE already exists${NC}"
+        echo -e "${YELLOW}  Add test input from examples${NC}"
+    fi
+
+    if [ ! -f "$README_FILE" ]; then
+        echo "# Advent of Code $YEAR - Day $DAY" > "$README_FILE"
+        echo "" >> "$README_FILE"
+        echo "**Source:** https://adventofcode.com/$YEAR/day/$DAY" >> "$README_FILE"
+        echo -e "${GREEN}✓ Created $README_FILE${NC}"
+        echo -e "${YELLOW}  Run with --fetch to download puzzle description${NC}"
     fi
 fi
 
@@ -201,18 +234,20 @@ echo -e "${GREEN}Setup complete! 🎄${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 echo "Files created:"
-echo "  Solution: $SRC_FILE"
-echo "  Tests:    $TEST_FILE"
-echo "  Input:    $INPUT_FILE"
-echo "  Test In:  $TEST_INPUT_FILE"
+echo "  📝 README:   $README_FILE"
+echo "  💻 Solution: $SRC_FILE"
+echo "  🧪 Tests:    $TEST_FILE"
+echo "  📥 Input:    $INPUT_FILE"
+echo "  📋 Test In:  $TEST_INPUT_FILE"
 echo ""
 echo "Next steps:"
-echo "1. Verify test input in: $TEST_INPUT_FILE"
+echo "1. Read puzzle:  cat $README_FILE"
+echo "2. Verify test input in: $TEST_INPUT_FILE"
 if [ "$FETCH_INPUT" == false ]; then
-    echo "2. Add puzzle input to: $INPUT_FILE"
+    echo "3. Add puzzle input to: $INPUT_FILE"
     echo "   Or run: ./setup-day.sh $YEAR $DAY --fetch"
 fi
-echo "3. Edit solution in: $SRC_FILE"
+echo "3. Edit solution: $SRC_FILE"
 echo "4. Run tests: mvn test -Dtest=year$YEAR.Day$DAY.MainTest"
-echo "5. Run solution: mvn exec:java -Dexec.mainClass=\"year$YEAR.Day$DAY.Main\""
+echo "5. Run: mvn exec:java -Dexec.mainClass=\"year$YEAR.Day$DAY.Main\""
 echo ""
