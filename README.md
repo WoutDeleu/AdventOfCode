@@ -86,6 +86,7 @@ mvn test -Dtest=Day1Test
 AdventOfCode/
 ├── FetchInput.java        # Utility to auto-fetch inputs from AOC
 ├── src/main/java/
+│   ├── year2015/          # 2015 solutions
 │   ├── year2016/          # 2016 solutions
 │   ├── year2023/          # 2023 solutions
 │   ├── year2024/          # 2024 solutions
