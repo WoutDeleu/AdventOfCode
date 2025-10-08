@@ -1,10 +1,9 @@
 # Advent of Code - Java Solutions 🎄
 
-My solutions for [Advent of Code](https://adventofcode.com/) puzzles, written in Java.
+Clean, utility-driven solutions for [Advent of Code](https://adventofcode.com/) puzzles.
 
-## 🎯 Progress
+## 🎯 Progress - 2024
 
-### 2024
 **12 / 25 days completed** ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐
 
 | Day | Status | Day | Status | Day | Status | Day | Status |
@@ -62,16 +61,14 @@ To use `--fetch`, configure your AOC session cookie once:
 
 ### Running a Solution
 ```bash
-# Compile and run a specific day
-cd src/main/java
-javac year2024/Day1/Main.java
-java year2024.Day1.Main
-
-# Or use Maven
+# Use Maven to compile and run
 mvn compile exec:java -Dexec.mainClass="year2024.Day1.Main"
 
 # Run tests
-mvn test -Dtest=Day1Test
+mvn test -Dtest=year2024.Day1.MainTest
+
+# Run all tests
+mvn test
 ```
 
 ---
@@ -80,55 +77,121 @@ mvn test -Dtest=Day1Test
 
 ```
 AdventOfCode/
-├── FetchInput.java        # Utility to auto-fetch inputs from AOC
+├── setup-day.sh           # Script to auto-setup new days
 ├── src/main/java/
+│   ├── utils/             # Shared utility classes
+│   │   ├── InputReader.java   # Centralized file I/O
+│   │   ├── ParsingUtils.java  # Integer/grid parsing
+│   │   ├── GridUtils.java     # Grid operations
+│   │   └── MathUtils.java     # Math helpers
 │   ├── year2015/          # 2015 solutions
 │   ├── year2016/          # 2016 solutions
 │   ├── year2023/          # 2023 solutions
-│   ├── year2024/          # 2024 solutions
-│   │   ├── Day1/
-│   │   │   ├── Main.java     # Solution code
-│   │   │   └── input         # Your puzzle input
-│   │   ├── Day2/
-│   │   └── ...
-│   └── aoc/               # Shared utility classes
-│       └── utils/
+│   └── year2024/          # 2024 solutions
+│       ├── Day1/
+│       │   ├── Main.java      # Solution code
+│       │   └── input          # Your puzzle input
+│       ├── Day2/
+│       └── ...
 ├── src/test/java/
 │   └── year2024/          # Unit tests
 │       ├── Day1/
-│       │   ├── MainTest.java # JUnit tests
-│       │   └── input         # Example/test input
+│       │   ├── MainTest.java  # JUnit tests
+│       │   └── input          # Example/test input
 │       └── ...
 ├── Challenges/            # Problem descriptions (markdown)
-│   ├── 2023/
 │   └── 2024/
+│       ├── Day1/README.md
+│       └── ...
+├── templates/             # Code generation templates
+│   ├── Day.java.template
+│   └── DayTest.java.template
 ├── pom.xml               # Maven configuration
 └── README.md
 ```
 
 **Each day follows a consistent structure:**
-- **Main.java**: Contains `solve_pt1()` and `solve_pt2()` methods
+- **Main.java**: Contains `solvePart1()` and `solvePart2()` methods
 - **input**: Your actual puzzle input (fetched from AOC)
 - **MainTest.java**: JUnit tests using example inputs
 - **test/input**: Example input from puzzle description
 
 ---
 
+## 🔧 Utility Classes
+
+All solutions use centralized utilities to eliminate code duplication:
+
+### InputReader
+```java
+// Read main input
+var input = InputReader.readLines(2024, 1);
+
+// Read test input
+var testInput = InputReader.readLines(2024, 1, true);
+```
+
+### ParsingUtils
+```java
+// Parse space-separated integers
+List<Integer> numbers = ParsingUtils.parseInts("1 2 3 4");
+
+// Extract all integers from text (with regex)
+List<Integer> nums = ParsingUtils.extractInts("mul(123,456)");
+
+// Parse comma-separated integers
+List<Integer> csv = ParsingUtils.parseCSVInts("1,2,3,4,5");
+
+// Parse grids
+char[][] grid = ParsingUtils.parseGrid(lines);
+int[][] intGrid = ParsingUtils.parseIntGrid(lines);
+```
+
+### GridUtils
+```java
+// Bounds checking
+if (GridUtils.inBounds(row, col, grid)) { ... }
+
+// Find positions
+int[] pos = GridUtils.findFirst(grid, 'S');
+List<int[]> positions = GridUtils.findAll(grid, '#');
+
+// Count occurrences
+int count = GridUtils.countChar(grid, '#');
+
+// Get neighbors (4-directional or 8-directional)
+List<int[]> neighbors = GridUtils.getNeighbors4(row, col, grid);
+List<int[]> neighbors8 = GridUtils.getNeighbors8(row, col, grid);
+
+// Copy grid
+char[][] copy = GridUtils.copyGrid(grid);
+```
+
+### MathUtils
+```java
+// GCD and LCM
+long g = MathUtils.gcd(48, 18);
+long l = MathUtils.lcm(12, 18);
+
+// Manhattan distance
+int dist = MathUtils.manhattanDistance(x1, y1, x2, y2);
+```
+
+---
+
 ## 💻 Solution Template
 
-The generated template provides a clean, flexible structure:
+The generated template provides a clean, utility-driven structure:
 
 ```java
 package year2024.Day1;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import utils.InputReader;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        var input = readInput("./src/main/java/year2024/Day1/input");
+    public static void main(String[] args) {
+        var input = InputReader.readLines(2024, 1);
 
         var part1 = solvePart1(input);
         System.out.println("Part 1: " + part1);
@@ -138,53 +201,51 @@ public class Main {
     }
 
     static Object solvePart1(List<String> lines) {
-        // TODO: Implement solution for part 1
-        // Return type can be int, long, String, etc.
-        return null;
+        // TODO: Implement part 1
+        return 0;
     }
 
     static Object solvePart2(List<String> lines) {
-        // TODO: Implement solution for part 2
-        return null;
-    }
-
-    static List<String> readInput(String path) throws IOException {
-        return Files.readAllLines(Path.of(path));
+        // TODO: Implement part 2
+        return 0;
     }
 }
 ```
 
 **Key Features:**
-- ✅ **Flexible return types**: Use `Object` return type - works with int, long, String, etc.
-- ✅ **Modern Java**: Uses `Files.readAllLines()` for clean file reading
-- ✅ **List-based input**: Easy to process with streams and functional programming
+- ✅ **Centralized I/O**: Uses `InputReader` utility - no custom file reading code
+- ✅ **Flexible return types**: `Object` return type works with int, long, String, etc.
+- ✅ **Utility-driven**: Leverage ParsingUtils, GridUtils, MathUtils for common operations
 - ✅ **Static methods**: Testable without creating instances
+- ✅ **Clean and minimal**: Focus on problem-solving, not boilerplate
 
 **Common Usage Patterns:**
 
 ```java
-// Parse to integers
+// Parse integers with ParsingUtils
+import utils.ParsingUtils;
+
 static Object solvePart1(List<String> lines) {
-    List<Integer> numbers = lines.stream()
-        .map(Integer::parseInt)
-        .toList();
+    List<Integer> numbers = ParsingUtils.parseInts(lines.get(0));
     return numbers.stream().mapToInt(Integer::intValue).sum();
 }
 
-// Parse grid/2D array
+// Parse grid with GridUtils
+import utils.ParsingUtils;
+import utils.GridUtils;
+
 static Object solvePart1(List<String> lines) {
-    char[][] grid = lines.stream()
-        .map(String::toCharArray)
-        .toArray(char[][]::new);
-    return processGrid(grid);
+    char[][] grid = ParsingUtils.parseGrid(lines);
+    int count = GridUtils.countChar(grid, '#');
+    return count;
 }
 
-// Split and parse
+// Extract all integers from text
+import utils.ParsingUtils;
+
 static Object solvePart1(List<String> lines) {
-    String[] parts = lines.get(0).split(",");
-    return Arrays.stream(parts)
-        .mapToInt(Integer::parseInt)
-        .sum();
+    List<Integer> allNumbers = ParsingUtils.extractInts(lines.get(0));
+    return allNumbers.get(0) * allNumbers.get(1);
 }
 ```
 
@@ -194,14 +255,15 @@ static Object solvePart1(List<String> lines) {
 
 Here's the recommended workflow when a new Advent of Code puzzle is released:
 
-1. **Fetch everything automatically** (6:00 AM EST when puzzle unlocks)
+1. **Setup new day** (6:00 AM EST when puzzle unlocks)
    ```bash
-   java FetchInput.java 2024 13
+   ./setup-day.sh 2024 13 --fetch
    ```
    This automatically:
    - Creates `src/main/java/year2024/Day13/` and `src/test/java/year2024/Day13/`
    - Downloads your **personal puzzle input** → `src/main/java/year2024/Day13/input`
    - Extracts **example input** from puzzle → `src/test/java/year2024/Day13/input`
+   - Saves puzzle description → `Challenges/2024/Day13/README.md`
    - Generates `Main.java` and `MainTest.java` from templates
 
 2. **Verify example input**
@@ -210,31 +272,36 @@ Here's the recommended workflow when a new Advent of Code puzzle is released:
 
 3. **Implement solution**
    - Edit `src/main/java/year2024/Day13/Main.java`
-   - Implement `read()` method to parse your input
-   - Implement `solve_pt1()` with your solution logic
+   - Implement `solvePart1()` with your solution logic
+   - Use utility classes: `ParsingUtils`, `GridUtils`, `MathUtils`
 
 4. **Test with example**
    ```bash
-   mvn test -Dtest=Day13Test
+   mvn test -Dtest=year2024.Day13.MainTest
    ```
 
 5. **Run with real input**
    ```bash
-   cd src/main/java
-   java year2024.Day13.Main
+   mvn exec:java -Dexec.mainClass="year2024.Day13.Main"
    ```
 
 6. **Submit answer and implement Part 2**
-   - Implement `solve_pt2()` method
-   - Update test expectations
+   - Implement `solvePart2()` method
+   - Update test expectations in `MainTest.java`
    - Test and run again
 
 ### Development Tips
 
+**Use the Utilities!**
+- **Parsing**: `ParsingUtils.parseInts()`, `extractInts()`, `parseGrid()`
+- **Grids**: `GridUtils.inBounds()`, `getNeighbors4()`, `countChar()`
+- **Math**: `MathUtils.gcd()`, `lcm()`, `manhattanDistance()`
+- **I/O**: `InputReader.readLines(year, day)` for all file reading
+
 **Common Patterns**
-- **Grid problems**: Use 2D arrays or custom Coordinate classes (see Day10, Day12)
-- **Path finding**: BFS/DFS with visited sets
-- **Parsing**: Scanner for input, split/regex for parsing
+- **Grid problems**: Use `ParsingUtils.parseGrid()` + `GridUtils` helpers
+- **Path finding**: BFS/DFS with visited sets and `getNeighbors4/8()`
+- **Number extraction**: Use `ParsingUtils.extractInts()` for regex extraction
 - **Performance**: Use HashMaps and HashSets for O(1) lookups
 
 **Testing Strategy**
@@ -244,7 +311,7 @@ Here's the recommended workflow when a new Advent of Code puzzle is released:
 4. Only run with real input once tests pass
 
 **How Example Extraction Works**
-- FetchInput.java fetches the puzzle description HTML
+- setup-day.sh fetches the puzzle description HTML
 - Parses `<pre><code>` blocks to find example inputs
 - Automatically handles HTML entities and formatting
 - Selects the first substantial code block (usually the example)
