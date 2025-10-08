@@ -75,15 +75,51 @@ if [ "$FETCH_INPUT" == true ]; then
     # Check if AOC_SESSION is set
     if [ -z "$AOC_SESSION" ]; then
         echo -e "${RED}Error: AOC_SESSION environment variable not set${NC}"
-        echo "Please set it with your Advent of Code session cookie:"
-        echo "  export AOC_SESSION='your_session_cookie_here'"
         echo ""
-        echo "To get your session cookie:"
-        echo "  1. Log in to https://adventofcode.com"
-        echo "  2. Open browser DevTools (F12)"
-        echo "  3. Go to Application/Storage → Cookies"
-        echo "  4. Copy the 'session' cookie value"
-        exit 1
+
+        # Check if setup-session.sh exists
+        if [ -f "./setup-session.sh" ]; then
+            echo -e "${YELLOW}Would you like to configure your session cookie now?${NC}"
+            read -p "Run setup-session.sh? (y/n): " -n 1 -r
+            echo ""
+
+            if [[ $REPLY =~ ^[Yy]$ ]]; then
+                # Run setup-session.sh
+                ./setup-session.sh
+
+                # Check if it succeeded by verifying AOC_SESSION is now set
+                # Need to source the shell config to get the new variable
+                if [ -f "$HOME/.zshrc" ]; then
+                    source "$HOME/.zshrc"
+                elif [ -f "$HOME/.bashrc" ]; then
+                    source "$HOME/.bashrc"
+                fi
+
+                # Check again if AOC_SESSION is now set
+                if [ -z "$AOC_SESSION" ]; then
+                    echo -e "${RED}Session setup failed or was cancelled${NC}"
+                    exit 1
+                fi
+
+                echo -e "${GREEN}Session configured! Continuing with setup...${NC}"
+                echo ""
+            else
+                echo -e "${YELLOW}Setup cancelled. You can run ./setup-session.sh later.${NC}"
+                exit 1
+            fi
+        else
+            echo "Please set it with your Advent of Code session cookie:"
+            echo "  export AOC_SESSION='your_session_cookie_here'"
+            echo ""
+            echo "To get your session cookie:"
+            echo "  1. Log in to https://adventofcode.com"
+            echo "  2. Open browser DevTools (F12)"
+            echo "  3. Go to Application/Storage → Cookies"
+            echo "  4. Copy the 'session' cookie value"
+            echo ""
+            echo -e "${YELLOW}Or run: ./setup-session.sh${NC}"
+            exit 1
+        fi
     fi
 
     # Fetch input using curl with retries
@@ -123,6 +159,35 @@ if [ "$FETCH_INPUT" == true ]; then
         elif [ "$HTTP_CODE" -eq 400 ]; then
             echo -e "${RED}✗ Invalid session cookie (HTTP 400)${NC}"
             rm -f "$INPUT_FILE"
+
+            # Offer to reconfigure session
+            if [ -f "./setup-session.sh" ]; then
+                echo ""
+                echo -e "${YELLOW}Your session cookie appears to be invalid or expired.${NC}"
+                echo -e "${YELLOW}Would you like to update it now?${NC}"
+                read -p "Run setup-session.sh? (y/n): " -n 1 -r
+                echo ""
+
+                if [[ $REPLY =~ ^[Yy]$ ]]; then
+                    ./setup-session.sh
+
+                    # Reload session
+                    if [ -f "$HOME/.zshrc" ]; then
+                        source "$HOME/.zshrc"
+                    elif [ -f "$HOME/.bashrc" ]; then
+                        source "$HOME/.bashrc"
+                    fi
+
+                    if [ -z "$AOC_SESSION" ]; then
+                        echo -e "${RED}Session setup failed or was cancelled${NC}"
+                        break
+                    fi
+
+                    echo -e "${GREEN}Retrying with new session cookie...${NC}"
+                    RETRY_COUNT=0  # Reset retry count to try again
+                    continue
+                fi
+            fi
             break
         else
             echo -e "${RED}✗ Failed (HTTP $HTTP_CODE)${NC}"
