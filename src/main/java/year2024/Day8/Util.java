@@ -1,10 +1,9 @@
 package year2024.Day8;
 
-import utils.GridUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import utils.GridUtils;
 
 public class Util {
 
@@ -25,7 +24,7 @@ public class Util {
   }
 
   public static void addCharToMap(
-    Map<Character, Stack<int[]>> availableChars, char ch, int row, int col) {
+      Map<Character, Stack<int[]>> availableChars, char ch, int row, int col) {
     if (!availableChars.containsKey(ch)) {
       Stack<int[]> stack = new Stack<>();
       stack.push(new int[] {row, col});
@@ -34,8 +33,6 @@ public class Util {
       availableChars.get(ch).add(new int[] {row, col});
     }
   }
-
-
 
   public static Map<Character, Stack<int[]>> availableChars(char[][] input) {
     Map<Character, Stack<int[]>> availableChars = new HashMap<>();

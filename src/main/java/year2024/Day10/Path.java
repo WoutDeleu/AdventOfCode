@@ -1,8 +1,8 @@
 package year2024.Day10;
 
-import utils.Coordinate;
 import java.util.LinkedList;
 import java.util.List;
+import utils.Coordinate;
 
 public record Path(LinkedList<Coordinate> path) {
   public Path(int row, int col) {

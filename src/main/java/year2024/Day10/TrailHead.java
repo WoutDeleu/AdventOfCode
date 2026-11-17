@@ -1,11 +1,11 @@
 package year2024.Day10;
 
-import utils.Coordinate;
-import utils.GridUtils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import utils.Coordinate;
+import utils.GridUtils;
 
 public class TrailHead {
   private final int row;

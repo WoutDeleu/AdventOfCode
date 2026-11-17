@@ -28,9 +28,9 @@ public record DistanceVector(int x1, int y1, int dx, int dy) {
 
   List<int[]> allAntisymmetricPoints(char[][] grid) {
     List<int[]> points = new ArrayList<>();
-    points.add(new int[]{x1, y1});
+    points.add(new int[] {x1, y1});
 
-    int[] newPoint = {x1 + dx, y1 +  dy};
+    int[] newPoint = {x1 + dx, y1 + dy};
     int i = 2;
     while (isValid(newPoint, grid)) {
       points.add(newPoint);

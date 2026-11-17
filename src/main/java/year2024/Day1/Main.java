@@ -1,64 +1,63 @@
 package year2024.Day1;
 
-import utils.InputReader;
-import utils.ParsingUtils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import utils.InputReader;
+import utils.ParsingUtils;
 
 public class Main {
-    public static void main(String[] args) {
-        var input = InputReader.readLines(2024, 1);
+  public static void main(String[] args) {
+    var input = InputReader.readLines(2024, 1);
 
-        var part1 = solvePart1(input);
-        System.out.println("Part 1: " + part1);
+    var part1 = solvePart1(input);
+    System.out.println("Part 1: " + part1);
 
-        var part2 = solvePart2(input);
-        System.out.println("Part 2: " + part2);
+    var part2 = solvePart2(input);
+    System.out.println("Part 2: " + part2);
+  }
+
+  static Object solvePart1(List<String> lines) {
+    var list1 = new ArrayList<Integer>();
+    var list2 = new ArrayList<Integer>();
+
+    for (String line : lines) {
+      List<Integer> parts = ParsingUtils.parseInts(line);
+      list1.add(parts.get(0));
+      list2.add(parts.get(1));
     }
 
-    static Object solvePart1(List<String> lines) {
-        var list1 = new ArrayList<Integer>();
-        var list2 = new ArrayList<Integer>();
+    Collections.sort(list1);
+    Collections.sort(list2);
 
-        for (String line : lines) {
-            List<Integer> parts = ParsingUtils.parseInts(line);
-            list1.add(parts.get(0));
-            list2.add(parts.get(1));
-        }
+    int distance = 0;
+    for (int i = 0; i < list1.size(); i++) {
+      distance += Math.abs(list1.get(i) - list2.get(i));
+    }
+    return distance;
+  }
 
-        Collections.sort(list1);
-        Collections.sort(list2);
+  static Object solvePart2(List<String> lines) {
+    var list1 = new ArrayList<Integer>();
+    var list2 = new ArrayList<Integer>();
 
-        int distance = 0;
-        for (int i = 0; i < list1.size(); i++) {
-            distance += Math.abs(list1.get(i) - list2.get(i));
-        }
-        return distance;
+    for (String line : lines) {
+      List<Integer> parts = ParsingUtils.parseInts(line);
+      list1.add(parts.get(0));
+      list2.add(parts.get(1));
     }
 
-    static Object solvePart2(List<String> lines) {
-        var list1 = new ArrayList<Integer>();
-        var list2 = new ArrayList<Integer>();
-
-        for (String line : lines) {
-            List<Integer> parts = ParsingUtils.parseInts(line);
-            list1.add(parts.get(0));
-            list2.add(parts.get(1));
+    int simularityScore = 0;
+    for (int i = 0; i < list1.size(); i++) {
+      int current = list1.get(i);
+      int occurence = 0;
+      for (int j = 0; j < list2.size(); j++) {
+        if (current == list2.get(j)) {
+          occurence++;
         }
-
-        int simularityScore = 0;
-        for (int i = 0; i < list1.size(); i++) {
-            int current = list1.get(i);
-            int occurence = 0;
-            for (int j = 0; j < list2.size(); j++) {
-                if (current == list2.get(j)) {
-                    occurence++;
-                }
-            }
-            simularityScore += occurence * current;
-        }
-        return simularityScore;
+      }
+      simularityScore += occurence * current;
     }
+    return simularityScore;
+  }
 }

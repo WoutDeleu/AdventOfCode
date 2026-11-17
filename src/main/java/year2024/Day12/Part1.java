@@ -1,6 +1,5 @@
 package year2024.Day12;
 
-import utils.Coordinate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import utils.Coordinate;
 
 public class Part1 {
-
 
   public long solve_pt1(char[][] field) {
     Map<Coordinate, Plant> garden = createGarden(field);
@@ -29,7 +28,8 @@ public class Part1 {
     }
     return calculateScore(regions);
   }
-  public static  Map<Coordinate, Plant> createGarden(char[][] field) {
+
+  public static Map<Coordinate, Plant> createGarden(char[][] field) {
     Map<Coordinate, Plant> garden = new HashMap<>();
     for (int r = 0; r < field.length; r++) {
       for (int c = 0; c < field[0].length; c++) {
@@ -40,8 +40,8 @@ public class Part1 {
     return garden;
   }
 
-  private  Queue<Plant> getAllAdjacents(
-    Plant plant, char[][] field, Map<Coordinate, Plant> garden, Set<Plant> visited) {
+  private Queue<Plant> getAllAdjacents(
+      Plant plant, char[][] field, Map<Coordinate, Plant> garden, Set<Plant> visited) {
     Queue<Plant> queue = new LinkedList<>();
     char currentChar = plant.getPlant();
     int r = plant.getCoordinate().row;
@@ -61,6 +61,7 @@ public class Part1 {
     }
     return queue;
   }
+
   private long calculateScore(List<Set<Plant>> regions) {
     long totalScore = 0;
     for (Set<Plant> region : regions) {
@@ -73,9 +74,8 @@ public class Part1 {
     return totalScore;
   }
 
-
   public Set<Plant> collectAllAdjacentPlants(
-    char[][] field, Map<Coordinate, Plant> garden, Set<Plant> visited, Plant plant) {
+      char[][] field, Map<Coordinate, Plant> garden, Set<Plant> visited, Plant plant) {
     Set<Plant> region = new HashSet<>();
     region.add(plant);
     Queue<Plant> queue = getAllAdjacents(plant, field, garden, visited);
